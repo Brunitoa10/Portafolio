@@ -1,0 +1,16 @@
+
+.btn-navbar {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: none;
+    border-radius: 12px;
+    box-shadow: 0px 4px 6px #00FFFF;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-navbar:hover {
+    background-color: #1976d2;
+    transform: scale(1.05);
+  }
+  
