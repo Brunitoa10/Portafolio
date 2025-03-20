@@ -43,6 +43,15 @@ export default function Navbar() {
         >
           Contacto
         </Button>
+        <Button
+         variant="outlined"
+         color="primary"
+         component={Link}
+         href="/CV"
+         className="btn-navbar"
+        >
+          CV
+        </Button>
       </Stack>
     </nav>
   );
