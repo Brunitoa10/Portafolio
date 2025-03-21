@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/NavBar";
 import { Urbanist } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import "../styles/buttonStyles.css";
 import "../styles/globals.css";
 
@@ -16,9 +17,11 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  
   return (
     <html lang="es" className={urbanist.variable}>
       <body className="antialiased">
+      <NextTopLoader showSpinner={false} color="#00FFFF" />
         <Navbar />
         <main className="container mx-auto px-4">{children}</main>
         <Footer />
