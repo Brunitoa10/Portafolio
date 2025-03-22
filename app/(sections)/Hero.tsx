@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import AboutMe from "./AboutMe";
+
 
 export default function Hero() {
   return (
@@ -29,6 +31,15 @@ export default function Hero() {
           priority
         />
       </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="mt-4"
+      >
+       <AboutMe />
+      </motion.div>
+     
     </section>
   );
 }
