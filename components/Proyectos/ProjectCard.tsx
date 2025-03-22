@@ -23,14 +23,14 @@ interface Proyecto {
 export default function ProjectCard() {
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
-  const [loading, setLoading] = useState(true); // Estado de carga
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProyectos = async () => {
       const response = await fetch("/api/proyectos");
       const data = await response.json();
-      setProyectos(data); 
-      setLoading(false); // Cambia a false una vez que los datos estén cargados
+      setProyectos(data);
+      setLoading(false);
     };
 
     fetchProyectos();
@@ -43,7 +43,6 @@ export default function ProjectCard() {
   return (
     <Grid container spacing={3} justifyContent="center" sx={{ flexWrap: "wrap" }}>
       {loading ? (
-        // Si está cargando, muestra el skeleton
         Array.from(new Array(4)).map((_, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Card sx={{ minWidth: 300, maxWidth: "100%", borderRadius: "16px", boxShadow: 3, background: "linear-gradient(45deg, #0a0f29, #122b4e, #0077b6)"}}>
@@ -61,7 +60,6 @@ export default function ProjectCard() {
           </Grid>
         ))
       ) : (
-        // Una vez que se cargan los proyectos, muestra las tarjetas
         proyectos.map((proyecto, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Card

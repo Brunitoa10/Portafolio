@@ -13,6 +13,10 @@
     background-color: #1976d2;
     transform: scale(1.05);
   }
+  .btn-navbar:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
   
   .button {
     width: 100%;
@@ -30,9 +34,11 @@
     background: linear-gradient(45deg, #000000, #222324);
     transform: scale(1.05);
 }
-  
+
   @media (min-width: 600px) {
     .button {
-      width: auto;
+      width: "100%";
+      min-width: 200px;
+      max-width: 320px;
     }
   }
