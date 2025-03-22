@@ -24,7 +24,7 @@ export default function MobileMenu() {
         initial="hidden"
         animate={open ? "visible" : "hidden"}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="absolute top-16 left-0 w-full bg-gray-900 p-4 rounded-md shadow-lg overflow-hidden"
+        className="absolute top-16 left-0 w-full bg-gray-900 p-4 z-50 rounded-md shadow-lg overflow-hidden"
       >
         <Stack direction="column" spacing={2}>
           {menuItems.map(({ label, path }) => (
