@@ -1,7 +1,9 @@
 export default function AboutMe() {
     return (
       <section className="text-center py-4">
+       
         <div  className="max-w-3xl mx-auto p-8 rounded-lg shadow-xl transform transition duration-500 hover:scale-105">
+             <h1 className="text-2xl font-bold">About Me</h1>
             <p className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-6">
                 Tecnico Informatico y estudiante de Licenciatura en Computacion.
                 Experiencia en soporte tecnico, mantenimiento de sistemas y

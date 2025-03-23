@@ -1,5 +1,3 @@
-// app/api/proyectos/route.js
-
 export async function GET() {
     const proyectos = [
       {
