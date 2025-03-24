@@ -1,6 +1,8 @@
 "use client";
 
 import TypingText from "@/components/animaciones/TypingText";
+import MotivoDesarrollador from "@/components/motivoContratarme/MotivoDesarrollador";
+import MotivoTecnico from "@/components/motivoContratarme/Tecnico/MotivoTecnico";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import AboutMe from "./AboutMe";
@@ -28,7 +30,7 @@ export default function Hero() {
         <Image
           src="https://ckmtz7p1az.ufs.sh/f/vQEgSxK0T6XMoBmdzZ3hm2KRntxrYiBsJaQULebA9XZG43Ev"
           alt="Foto de Bruno Ariel Parisi"
-          layout="fill"
+          fill
           priority
         />
       </motion.div>
@@ -39,6 +41,8 @@ export default function Hero() {
         className="mt-4"
       >
        <AboutMe />
+       <MotivoTecnico />
+       <MotivoDesarrollador />
       </motion.div>
      
     </section>
