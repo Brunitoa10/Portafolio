@@ -10,7 +10,7 @@ import AboutMe from "./AboutMe";
 
 export default function Hero() {
   return (
-    <section className="text-center py-20 flex flex-col items-center">
+    <section className="text-center py-10 flex flex-col items-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
