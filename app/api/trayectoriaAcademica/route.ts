@@ -4,12 +4,7 @@ export async function GET() {
   const trayectoria = [
     {
       titulo: "Tecnico Informatico Autonomo",
-      institucion: "Technology Advance Solutions",
-      fecha: "2025 - Presente",
-    },
-    {
-      titulo: "Tecnico Informatico Autonomo",
-      institucion: "Particular",
+      institucion: "Autonomo",
       fecha: "2015 - 2019",
     },
     {

@@ -29,8 +29,8 @@ const Experiencia = () => {
           <div className="absolute left-0 w-3 h-3 bg-cyan-500 rounded-full top-2.5"></div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md" style={{background: "linear-gradient(45deg, #0a0f29, #122b4e, #0077b6)",padding: "2rem",borderRadius: "8px",}}>
             <h3 className="text-lg font-semibold">{exp.titulo}</h3>
-            <p className="text-gray-600">{exp.empresa}</p>
-            <span className="text-sm text-gray-500">{exp.fecha}</span>
+            <p className="text-white">{exp.empresa}</p>
+            <span className="text-sm text-white">{exp.fecha}</span>
           </div>
         </div>
       ))}

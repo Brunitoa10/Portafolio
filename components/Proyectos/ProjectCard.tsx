@@ -18,6 +18,7 @@ interface Proyecto {
   foto: string;
   sitioWeb: string;
   github: string;
+  tecnologias: string;
 }
 
 export default function ProjectCard() {
@@ -60,7 +61,9 @@ export default function ProjectCard() {
           </Grid>
         ))
       ) : (
-        proyectos.map((proyecto, index) => (
+        proyectos
+        .sort((a, b) => Number(new Date(b.fecha)) - Number(new Date(a.fecha)))
+        .map((proyecto, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Card
               sx={{
@@ -91,6 +94,9 @@ export default function ProjectCard() {
                 <Typography variant="body2" sx={{ marginBottom: 1 }}>
                   {proyecto.fecha}
                 </Typography>
+                <Typography variant="body2" className="text-gray bg-gradient-to-r from-blue-900 via-blue-500 to-gray-900 hover:from-blue-600 hover:via-gray-800 hover:to-blue-600 rounded-xl shadow-lg transform transition-all duration-300" sx={{ marginBottom: 1, fontWeight: "bold" }}>
+                  {proyecto.tecnologias}
+                </Typography>
                 {expanded[index] && (
                   <Typography variant="body2" sx={{ marginTop: 2 }}>
                     {proyecto.descripcion}
@@ -101,6 +107,13 @@ export default function ProjectCard() {
                 <Button
                   className="button"
                   size="small"
+                  sx={{
+                    minWidth: "auto",
+                    padding: "6px 12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.05px",
+                  }}
                   onClick={() => handleExpandClick(index)}
                   endIcon={
                     <ExpandMore

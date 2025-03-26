@@ -14,15 +14,21 @@ export default function AboutMe() {
             <div className="flex space-x-4 mt-6 justify-center">
                 <a
                     href="/sobreMi"
-                    className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+                     className="px-6 py-3 text-lg font-semibold text-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-gray-900 via-cyan-500 to-gray-900 hover:from-cyan-600 hover:via-gray-800 hover:to-cyan-600"
                 >
                     + Info
                 </a>
                 <a
                     href="/contacto"
-                    className="px-6 py-3 text-lg font-semibold text-white bg-emerald-500 hover:bg-emerald-600 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+                     className="px-6 py-3 text-lg font-semibold text-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-gray-900 via-cyan-500 to-gray-900 hover:from-cyan-600 hover:via-gray-800 hover:to-cyan-600"
                 >
                     Contacto
+                </a>
+                <a
+                    href="/proyectos"
+                     className="px-6 py-3 text-lg font-semibold text-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-gray-900 via-cyan-500 to-gray-900 hover:from-cyan-600 hover:via-gray-800 hover:to-cyan-600"
+                >
+                    Proyectos
                 </a>
             </div>
         </div>
