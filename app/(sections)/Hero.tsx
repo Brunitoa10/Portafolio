@@ -44,6 +44,7 @@ export default function Hero() {
        <AboutMe />
        <MotivoTecnico />
        <MotivoDesarrollador />
+       <TypingText text="La tecnología avanza con ideas, pero solo se transforma en equipo. 🚀" className="text-center text-xl mx-auto p-8 rounded-lg shadow-xl transform transition duration-500 hover:scale-105" />
       </motion.div>
      
     </section>
