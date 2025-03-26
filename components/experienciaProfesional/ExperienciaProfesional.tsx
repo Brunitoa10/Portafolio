@@ -1,15 +1,11 @@
 "use client";
 
+import { ExperienciaInterface } from "@/types/ExperienciaInterface";
 import { useEffect, useState } from "react";
 
-interface ExperienciaData {
-    titulo: string;
-    empresa: string;
-    fecha: string;
-  }
 
 const Experiencia = () => {
-    const [experiencias, setExperiencias] = useState<ExperienciaData[]>([]);
+    const [experiencias, setExperiencias] = useState<ExperienciaInterface[]>([]);
 
   useEffect(() => {
     const fetchExperiencias = async () => {

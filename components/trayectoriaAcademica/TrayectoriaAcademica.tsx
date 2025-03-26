@@ -1,15 +1,11 @@
 "use client";
 
+import { TrayectoriaInterface } from "@/types/TrayectoriaInterface";
 import { useEffect, useState } from "react";
 
-interface TrayectoriaData {
-    titulo: string;
-    institucion: string;
-    fecha: string;
-}
 
 const Trayectoria = () => {
-  const [trayectoria, setTrayectoria] = useState<TrayectoriaData[]>([]);
+  const [trayectoria, setTrayectoria] = useState<TrayectoriaInterface[]>([]);
 
   useEffect(() => {
     const fetchTrayectoria = async () => {
