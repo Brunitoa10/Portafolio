@@ -48,9 +48,7 @@ export default function Hero() {
         text="La tecnología avanza con ideas, pero solo se transforma en equipo. 🚀"
         className="text-center text-xl sm:text-2xl mx-4 sm:mx-auto p-4 sm:p-8 rounded-lg shadow-xl transform transition duration-500 hover:scale-105"
       />
-
       </motion.div>
-     
     </section>
   );
 }
