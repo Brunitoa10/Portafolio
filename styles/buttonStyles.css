@@ -32,7 +32,7 @@
 
   .btnAboutMe {
     padding: 12px 24px;
-    font-size: 1.125rem; /* text-lg */
+    font-size: 1.125rem;
     font-weight: 600;
     color: white;
     border-radius: 8px;
@@ -41,7 +41,6 @@
     background: linear-gradient(to right, #111827, #06b6d4, #111827);
     width: 100%;
   
-    /* Hover Effect */
     &:hover {
       transform: scale(1.05);
       background: linear-gradient(to right, #0891b2, #1e293b, #0891b2);
