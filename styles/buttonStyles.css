@@ -30,6 +30,29 @@
     
   }
 
+  .btnAboutMe {
+    padding: 12px 24px;
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    background: linear-gradient(to right, #111827, #06b6d4, #111827);
+    width: 100%;
+  
+    /* Hover Effect */
+    &:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #0891b2, #1e293b, #0891b2);
+    }
+  
+    @media (min-width: 640px) {
+      width: auto;
+    }
+  }
+  
+  
   .button:hover {
     background: linear-gradient(45deg, #000000, #222324);
     transform: scale(1.05);
@@ -42,3 +65,5 @@
       max-width: 320px;
     }
   }
+
+  

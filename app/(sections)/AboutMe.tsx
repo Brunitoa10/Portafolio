@@ -15,19 +15,19 @@ export default function AboutMe() {
           <div className="flex flex-wrap justify-center gap-4 mt-6">
             <a
               href="/sobreMi"
-              className="px-6 py-3 text-lg font-semibold text-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-gray-900 via-cyan-500 to-gray-900 hover:from-cyan-600 hover:via-gray-800 hover:to-cyan-600 w-full sm:w-auto"
+              className="btnAboutMe"
             >
               + Info
             </a>
             <a
               href="/contacto"
-              className="px-6 py-3 text-lg font-semibold text-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-gray-900 via-cyan-500 to-gray-900 hover:from-cyan-600 hover:via-gray-800 hover:to-cyan-600 w-full sm:w-auto"
+              className="btnAboutMe"
             >
               Contacto
             </a>
             <a
               href="/proyectos"
-              className="px-6 py-3 text-lg font-semibold text-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-gray-900 via-cyan-500 to-gray-900 hover:from-cyan-600 hover:via-gray-800 hover:to-cyan-600 w-full sm:w-auto"
+              className="btnAboutMe"
             >
               Proyectos
             </a>
