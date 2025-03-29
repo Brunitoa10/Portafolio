@@ -1,3 +1,5 @@
+import { ButtonsAboutMe } from "./ButtonsAboutMe";
+
 export default function AboutMe() {
     return (
       <section className="text-center py-4 w-full">
@@ -12,26 +14,7 @@ export default function AboutMe() {
             aplicando principios de diseño y buenas prácticas de programación.
             Enfoque en eficiencia, seguridad y rendimiento.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
-            <a
-              href="/sobreMi"
-              className="btnAboutMe"
-            >
-              + Info
-            </a>
-            <a
-              href="/contacto"
-              className="btnAboutMe"
-            >
-              Contacto
-            </a>
-            <a
-              href="/proyectos"
-              className="btnAboutMe"
-            >
-              Proyectos
-            </a>
-          </div>
+          <ButtonsAboutMe />
         </div>
       </section>
     );

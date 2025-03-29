@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/buttonStyles.css";
 import "../styles/globals.css";
-import DesktopMenu from "./menu/DesktopMenu";
-import MobileMenu from "./menu/MobileMenu";
+import DesktopMenu from "./menu/desktop/DesktopMenu";
+import MobileMenu from "./menu/mobile/MobileMenu";
+
 
 export default function Navbar() {
   return (
