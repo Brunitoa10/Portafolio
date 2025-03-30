@@ -14,6 +14,9 @@ const urbanist = Urbanist({
 export const metadata = {
   title: "Portafolio :: Bruno Ariel Parisi",
   description: "Mi portafolio",
+  icons: {
+    icon: "https://ckmtz7p1az.ufs.sh/f/vQEgSxK0T6XM2F8slaM4xvP7wSNldWTM805QfOtoYFaKzEkR",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
