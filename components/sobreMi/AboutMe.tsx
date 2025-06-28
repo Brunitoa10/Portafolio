@@ -7,13 +7,22 @@ export default function AboutMe() {
           <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-6">
             About Me
           </h1>
-          <p className="text-base sm:text-lg text-cyan font-extrabold leading-relaxed">
-            Técnico Informático y estudiante de Licenciatura en Computación.
-            Experiencia en soporte técnico, mantenimiento de sistemas y
-            optimización de equipos. Proyectos en Java, C, React y Next.js,
-            aplicando principios de diseño y buenas prácticas de programación.
-            Enfoque en eficiencia, seguridad y rendimiento.
+          <p className="text-base sm:text-lg text-cyan font-extrabold leading-relaxed mb-4">
+          ¡Hola! Soy Bruno Ariel Parisi, Técnico Informático y estudiante de Licenciatura en Ciencias de la Computación en la Universidad Nacional del Sur.
           </p>
+          <p className="text-base sm:text-lg text-cyan font-extrabold leading-relaxed mb-4">
+            Mi formación y experiencia combinan el desarrollo de software con un fuerte compromiso social y educativo. Me especializo en desarrollo de software, aplicando principios de Clean Code y SOLID, junto a patrones de diseño.
+          </p>
+          <p className="text-base sm:text-lg text-cyan font-extrabold leading-relaxed mb-4">
+            También tengo experiencia en soporte técnico, configuración de redes y seguridad informática, con conocimientos en hacking ético y análisis de vulnerabilidades.
+          </p>
+          <p className="text-base sm:text-lg text-cyan font-extrabold leading-relaxed mb-4">
+            He trabajado tanto de manera independiente como en proyectos voluntarios, lo que me ha permitido desarrollar habilidades de liderazgo, comunicación asertiva y trabajo en equipo.
+          </p>
+          <p className="text-base sm:text-lg text-cyan font-extrabold leading-relaxed">
+            Mi enfoque se basa en la eficiencia, la seguridad y el impacto social que la tecnología puede generar. Me entusiasma seguir aprendiendo, construir soluciones escalables y participar en proyectos donde la tecnología mejora la vida de las personas.
+          </p>
+
           <ButtonsAboutMe />
         </div>
       </section>

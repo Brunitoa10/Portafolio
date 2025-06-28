@@ -2,20 +2,40 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const experiencias = [
+     {
+      titulo: "Soporte tecnico en infraestructura escolar",
+      institucion: "Voluntariado",
+      fecha: "2025",
+    }, 
     {
-      titulo: "Licenciatura en computacion",
-      empresa: "Universidad Nacional Del Sur",
-      fecha: "2019 - Presente",
+      titulo: "Mantenimiento y actualización Notebooks UNS",
+      institucion: "Voluntariado",
+      fecha: "2025",
+    }, 
+     {
+      titulo: "Soporte Tecnico Tablets",
+      institucion: "Voluntariado",
+      fecha: "2025",
+    }, 
+    {
+      titulo: "Pagina web ONG presente",
+      institucion: "Voluntariado",
+      fecha: "2025",
+    }, 
+    {
+      titulo: "Desarrollador Freelance",
+      institucion: "Automatización comentarios y likes en X",
+      fecha: "2025",
+    }, 
+   {
+      titulo: "Tecnico Informatico Autonomo",
+      institucion: "Armado, Mantenimiento y Optimizacion de pc’s",
+      fecha: "2015 - 2019",
     },
     {
-      titulo: "Asistente en Informatica",
-      empresa: "Escuela de educacion secundaria N1 - Dr. Adolfo Alsina",
+      titulo: "Soporte Tecnico",
+      institucion: "Biblioteca Popular Juan Bautista Alberdi - Saavedra",
       fecha: "2016 - 2018",
-    },
-    {
-      titulo: "Bachiller en Economia y Administracion",
-      empresa: "Escuela de educacion secundaria N1 - Dr. Adolfo Alsina",
-      fecha: "2013 - 2018",
     },
   ];
 

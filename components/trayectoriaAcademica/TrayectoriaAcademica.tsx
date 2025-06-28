@@ -19,7 +19,7 @@ const Trayectoria = () => {
 
   return (
     <div className="border-l-4 border-cyan-500 pl-4 mt-8">
-      <h3 className="text-2xl font-semibold text-cyan-600 mb-4">Trayectoria Académica</h3>
+      <h3 className="text-2xl font-semibold text-cyan-600 mb-4">Trayectoria Academica</h3>
       {trayectoria.map((edu, index) => (
         <div key={index} className="relative pl-10 pb-8">
           <div className="absolute left-0 w-3 h-3 bg-cyan-500 rounded-full top-2.5"></div>
