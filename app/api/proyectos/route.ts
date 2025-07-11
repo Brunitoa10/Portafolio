@@ -1,6 +1,15 @@
 export async function GET() {
     const proyectos = [
       {
+        titulo: "2048",
+        fecha: "2025",
+        descripcion: "El 2048 es un juego de puzzle y estrategia cuyo objetivo es lanzar y combinar bloques numerados para crear bloques de mayor valor y ganar puntos.",
+        tecnologias: "ReactJS | Prolog",
+        foto: "https://ckmtz7p1az.ufs.sh/f/vQEgSxK0T6XMAH8A8haMH9LS2DlPq0zO6UvGstWhQRj1KgVZ",
+        sitioWeb: " ",
+        github: "https://github.com/Brunitoa10/2048",
+      },
+      {
         titulo: "DISO|Digital Solutions",
         fecha: "2024",
         descripcion: "Plataforma innovadora para la transformación digital de negocios.",
@@ -13,7 +22,7 @@ export async function GET() {
         titulo: "DriveNow Car",
         fecha: "2025",
         descripcion: "DriveNow Car es una aplicación de alquiler de coches fácil de usar, que permite a los usuarios buscar, reservar y pagar vehículos de manera rápida y segura. Con una interfaz moderna y la integración de Stripe, ofrece una experiencia de alquiler sin complicaciones, ideal para viajes de negocios o placer.",
-        tecnologias: "Nextjs - Prisma - Neon - TailwendCSS",
+        tecnologias: "Nextjs | Prisma | Neon | TailwendCSS",
         foto: "https://ckmtz7p1az.ufs.sh/f/vQEgSxK0T6XMfTjGElCp0PVuIMB1XzsKrgEaURnekj2JoiOH",
         sitioWeb: "https://drive-now-rental-car.vercel.app/",
         github: "https://github.com/Brunitoa10/DriveNow-RentalCar",
@@ -22,7 +31,7 @@ export async function GET() {
         titulo: "CV",
         fecha: "2023",
         descripcion: "Modelo curriculum vitae",
-        tecnologias: "JavaScript - CSS",
+        tecnologias: "JavaScript | CSS",
         foto: "https://ckmtz7p1az.ufs.sh/f/vQEgSxK0T6XMU2PXECvk6Wjf0VO9oLngBADyEh4F2cd3maJl",
         sitioWeb: "https://cv-eight-virid.vercel.app/",
         github: "https://github.com/Brunitoa10/CV",

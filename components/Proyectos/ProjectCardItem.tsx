@@ -19,16 +19,26 @@ export default function ProjectCardItem({ proyecto }: ProjectCardItemProps) {
         sx={{
           minWidth: 300,
           maxWidth: "100%",
+          height: 400,
           background: "linear-gradient(45deg, #0a0f29, #122b4e, #0077b6)",
           borderRadius: "16px",
           boxShadow: 3,
           overflow: "hidden",
-          width: "100%",
-          flexWrap: "wrap"
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
-        <CardContent sx={{ paddingBottom: "16px" }}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
+        <CardContent sx={{
+                flex: 1,
+                overflowY: "auto",
+                paddingBottom: "16px",
+                scrollbarWidth: "none", // Firefox
+                "&::-webkit-scrollbar": {
+                  display: "none" // Chrome, Safari, Edge
+                }
+              }}>
+          <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold",color: '#f5f5f5'  }}>
             {proyecto.titulo}
           </Typography>
           <Typography component="div">
@@ -41,14 +51,14 @@ export default function ProjectCardItem({ proyecto }: ProjectCardItemProps) {
               style={{ borderRadius: "8px" }}
             />
           </Typography>
-          <Typography variant="body2" sx={{ marginBottom: 1 }}>
+          <Typography variant="body2" sx={{ marginBottom: 1, color: '#f5f5f5', fontWeight: "bold" }}>
             {proyecto.fecha}
           </Typography>
-          <Typography variant="body2" sx={{ marginBottom: 1, fontWeight: "bold" }}>
+          <Typography variant="body2" sx={{ marginBottom: 1, fontWeight: "bold" , color: '#f5f5f5' }}>
             {proyecto.tecnologias}
           </Typography>
           {expanded && (
-            <Typography variant="body2" sx={{ marginTop: 2 }}>
+            <Typography variant="body2" sx={{ marginTop: 2, color: '#f5f5f5'  }}>
               {proyecto.descripcion}
             </Typography>
           )}
