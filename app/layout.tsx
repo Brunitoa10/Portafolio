@@ -1,34 +1,34 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/NavBar";
-import { Urbanist } from "next/font/google";
-import NextTopLoader from "nextjs-toploader";
-import "../styles/buttonStyles.css";
-import "../styles/globals.css";
+import type { Metadata } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
 
-
-const urbanist = Urbanist({
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
-  variable: "--font-urbanist",
+  weight: ["300", "400", "500", "600"],
 });
 
-export const metadata = {
-  title: "Portafolio :: Bruno Ariel Parisi",
-  description: "Mi portafolio",
-  icons: {
-    icon: "https://ckmtz7p1az.ufs.sh/f/vQEgSxK0T6XM2F8slaM4xvP7wSNldWTM805QfOtoYFaKzEkR",
-  },
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  style: ["normal", "italic"],
+});
+
+export const metadata: Metadata = {
+  title: "Bruno Ariel Parisi · IT Specialist",
+  description:
+    "Portfolio de Bruno Ariel Parisi — IT Field Specialist en Bahía Blanca, Argentina.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="es" className={urbanist.variable}>
-      <body className="antialiased">
-      <NextTopLoader showSpinner={false} color="#00FFFF" />
-        <Navbar />
-        <main className="container mx-auto px-4">{children}</main>
-        <Footer />
-      </body>
+    <html lang="es" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

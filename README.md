@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Bruno Ariel Parisi
 
-## Getting Started
+Portfolio personal migrado de HTML/CSS/JS estático a **Next.js 15 (App Router) + TypeScript**,
+con foco en clean code, modularización y patrones de diseño.
 
-First, run the development server:
+## Stack
+
+- Next.js (App Router, Server Components por defecto)
+- TypeScript (strict mode)
+- CSS puro con variables (mismo diseño visual que el original), sin frameworks de UI
+- ESLint (config de Next.js)
+
+## Cómo correrlo
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrí http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Build de producción:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Arquitectura
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/                     → rutas (App Router). page.tsx solo compone secciones.
+components/
+  layout/                → Navbar, Footer, Section (Template Method)
+  hero/                  → Hero, Terminal (typewriter animado)
+  about/                 → About, StatCard
+  skills/                → Skills, SkillCategoryRow, Chip
+  projects/              → Projects, ProjectCard, ProjectTagBadge
+  experience/            → Experience, TimelineItem
+  contact/               → Contact, ContactLinkButton
+  icons/                 → SVGs de contacto
+data/                    → "repositorios" de contenido (profile, skills, projects, timeline, contact, terminal)
+hooks/                   → useFadeInOnScroll, useTerminalTypewriter
+lib/                     → terminalLineRenderers (Strategy), contactIconFactory (Factory), parseInlineBold
+types/                   → contratos compartidos (interfaces de dominio)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Patrones de diseño aplicados
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Repository / Data Provider** (`data/*.ts`): todo el contenido (textos, proyectos, skills,
+  timeline) vive separado de los componentes. Cambiar el contenido nunca implica tocar JSX.
+- **Template Method** (`components/layout/Section.tsx`): define el esqueleto común a toda
+  sección (fade-in + label + título + body) y cada sección solo aporta su `children`.
+- **Strategy** (`lib/terminalLineRenderers.tsx`): cada tipo de línea de la terminal
+  (`prompt`, `output`, `blank`, `cursor`) tiene su propia función de render registrada en un
+  mapa, en vez de un if/else dentro del componente.
+- **Factory** (`lib/contactIconFactory.tsx`): dado un `ContactIconName`, devuelve el ícono SVG
+  correspondiente sin que el consumidor conozca las implementaciones concretas.
+- **Composite**: `ProjectCard`, `TimelineItem`, `StatCard`, `Chip`, etc. son piezas pequeñas
+  y componibles que las secciones ensamblan (`Projects`, `Experience`, `Skills`...).
+- **Observer** (`hooks/useFadeInOnScroll.ts`): encapsula `IntersectionObserver` en un hook
+  reutilizable, en vez de repetir la lógica en cada sección.
 
-## Deploy on Vercel
+## Notas
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Los links de contacto (`data/contact.ts`) y proyectos (`data/projects.ts`) tienen URLs
+  placeholder (`TU_USUARIO`, `tu@email.com`, etc.) — reemplazalas por las reales.
+- El diseño visual (colores, tipografías, animaciones) es una réplica fiel del HTML original;
+  el CSS vive en `app/globals.css` usando las mismas variables (`--green`, `--cyan`, etc.).
