@@ -65,7 +65,7 @@ export const projects: Project[] = [
   },
   {
     name: "2048",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href: "https://github.com/Brunitoa10/2048",
     description:
@@ -77,7 +77,7 @@ export const projects: Project[] = [
   },
    {
     name: "DISO|Digital Solutions",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href: "https://github.com/Brunitoa10/DISO_DigitalSolutions_webReact",
     description:
@@ -88,7 +88,7 @@ export const projects: Project[] = [
   },
    {
     name: "DriveNow Car",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href: "https://github.com/Brunitoa10/DriveNow-RentalCar",
     description:
@@ -102,7 +102,7 @@ export const projects: Project[] = [
   },
   {
     name: "Super Marios Bros",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href: "https://github.com/Brunitoa10/SuperMarioBros",
     description:
@@ -116,7 +116,7 @@ export const projects: Project[] = [
   },
    {
     name: "Cuena Bancaria",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href:  "https://github.com/Brunitoa10/CuentaBancaria",
     description:
@@ -130,7 +130,7 @@ export const projects: Project[] = [
   },
   {
     name: "Gestion de Directorios",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href:   "https://github.com/Brunitoa10/Gestion_de_Directorios",
     description:
@@ -142,7 +142,7 @@ export const projects: Project[] = [
   },
    {
     name: "Cuenta Palabras",
-    icon: "-",
+    icon: "👨🏽‍💻",
     linkLabel: "⌥ code",
     href:   "https://github.com/Brunitoa10/CuentaPalabras",
     description:
