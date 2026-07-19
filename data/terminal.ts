@@ -9,19 +9,19 @@ export const terminalLines: TerminalLine[] = [
   { kind: "prompt", text: "whoami" },
   { kind: "output", text: "Bruno Ariel Parisi" },
   { kind: "blank" },
-  { kind: "prompt", text: "cat perfil.txt" },
+  { kind: "prompt", text: "Get-Content .\\perfil.txt" },
   { kind: "output", text: "┌─────────────────────────────────────┐" },
-  { kind: "output", text: "│  Rol     : IT Field Specialist      │", accent: "cyan" },
-  { kind: "output", text: "│  Empresa : TIVIT · Bunge BB         │" },
-  { kind: "output", text: "│  Stack   : Python · Bash · Java     │" },
-  { kind: "output", text: "│  Lugar   : Bahía Blanca, Argentina  │" },
+  { kind: "output", text: "  Rol     : IT Field JR                ", accent: "cyan" },
+  { kind: "output", text: "  Empresa : TIVIT · Bunge BB           " },
+  { kind: "output", text: "  Stack   : Bash · Powershell          " },
+  { kind: "output", text: "  Lugar   : Bahía Blanca, Argentina    " },
   { kind: "output", text: "└─────────────────────────────────────┘" },
   { kind: "blank" },
-  { kind: "prompt", text: "ls proyectos/" },
-  { kind: "output", text: "FieldNet/  prometeo/  topology-docs/  inventario/", accent: "cyan" },
+  { kind: "prompt", text: "Get-ChildItem .\\proyectos\\" },
+  { kind: "output", text: "Field/  prometeo/  topology-docs/  inventario/", accent: "cyan" },
   { kind: "blank" },
   { kind: "cursor" },
 ];
 
-export const TERMINAL_PROMPT = "bruno@prometeo:~$ ";
-export const TERMINAL_TITLE = "prometeo — bash — 80×24";
+export const TERMINAL_PROMPT = "PS bruno@prometeo:~> ";
+export const TERMINAL_TITLE = "prometeo — powershell — 80×24";
