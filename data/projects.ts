@@ -2,7 +2,7 @@ import type { Project } from "@/types";
 
 export const projects: Project[] = [
   {
-    name: "FieldNet",
+    name: "GitHub",
     icon: "📡",
     wide: true,
     linkLabel: "⌥ GitHub",
