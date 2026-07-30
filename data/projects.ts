@@ -153,4 +153,28 @@ export const projects: Project[] = [
       { label: "multiset", accent: "green" },
     ],
   },
+  {
+    name: "Chau Naranja",
+    icon: "👨🏽‍💻",
+    linkLabel: "⌥ code",
+    href: "https://chaunaranja.vercel.app/",
+    description:
+      "Sitio web para peluquería, con reserva de turnos online.",
+    tags: [
+      { label: "NextJS", accent: "green" },
+      { label: "En desarrollo", accent: "cyan" },
+    ],
+  },
+  {
+    name: "BBRAS",
+    icon: "👨🏽‍💻",
+    linkLabel: "⌥ code",
+    href: "https://bbras.vercel.app/",
+    description:
+      "Sitio para WEB brigada de búsqueda, rescate, ayuda y socorrismo.",
+    tags: [
+      { label: "NextJS", accent: "green" },
+      { label: "En desarrollo", accent: "cyan" },
+    ],
+  },
 ];
