@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   title: "Bruno Ariel Parisi · IT Specialist",
   description:
     "Portfolio de Bruno Ariel Parisi — IT Field Specialist en Bahía Blanca, Argentina.",
+  icons: {
+    icon: "/portafolio.png",
+    apple: "/portafolio.png",
+  },  
 };
 
 export default function RootLayout({
