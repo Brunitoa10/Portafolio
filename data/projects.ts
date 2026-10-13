@@ -42,21 +42,10 @@ export const projects: Project[] = [
     ],
   },
   {
-    name: "Inventario App",
-    icon: "📦",
-    description:
-      "Sistema de gestión de inventario IT con QR, escaneo de barras, exportación a Excel e historial de movimientos. Inspirado en PowerApps, construido en React.",
-    tags: [
-      { label: "React", accent: "green" },
-      { label: "JavaScript", accent: "cyan" },
-      { label: "Excel", accent: "green" },
-    ],
-  },
-  {
     name: "Kali Security Lab",
     icon: "🔐",
     description:
-      "Lab de hacking ético sobre Linux Mint con Docker. Configuración de theHarvester, Sherlock, recon-ng, Kismet y macchanger para OSINT y análisis de red.",
+      "Lab de hacking ético parrot - kali linux. Configuración de theHarvester, Sherlock, recon-ng, Kismet y macchanger para OSINT y análisis de red.",
       tags: [
       { label: "Kali", accent: "green" },
       { label: "Docker", accent: "cyan" },
