@@ -166,4 +166,16 @@ export const projects: Project[] = [
       { label: "En desarrollo", accent: "cyan" },
     ],
   },
+  {
+    name: "Nemesis Solutions",
+    icon: "👨🏽‍💻",
+    linkLabel: "⌥ code",
+    href: "https://nemesis-solutions.vercel.app/",
+    description:
+      "Sitio para WEB brigada de búsqueda, rescate, ayuda y socorrismo.",
+    tags: [
+      { label: "NextJS", accent: "green" },
+      { label: "En desarrollo", accent: "cyan" },
+    ],
+  },
 ];
