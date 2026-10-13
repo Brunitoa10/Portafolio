@@ -172,7 +172,7 @@ export const projects: Project[] = [
     linkLabel: "⌥ code",
     href: "https://nemesis-solutions.vercel.app/",
     description:
-      "Sitio para WEB brigada de búsqueda, rescate, ayuda y socorrismo.",
+      "Web soporte TI y desarrollo de software",
     tags: [
       { label: "NextJS", accent: "green" },
       { label: "En desarrollo", accent: "cyan" },
