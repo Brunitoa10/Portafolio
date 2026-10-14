@@ -3,13 +3,16 @@ import { Chip } from "./Chip";
 
 export function SkillCategoryRow({ label, accent, items }: SkillCategory) {
   return (
-    <div>
-      <div className="skill-cat-label">{label}</div>
-      <div className="chips">
-        {items.map((item) => (
-          <Chip key={item} label={item} accent={accent} />
+    <article className={`skill-cat${accent === "cyan" ? " cyan" : ""}`}>
+      <header className="skill-cat-head">
+        <h3 className="skill-cat-label">{label}</h3>
+        <span className="skill-cat-count">{items.length}</span>
+      </header>
+      <ul className="chips">
+        {items.map((item, index) => (
+          <Chip key={`${item}-${index}`} label={item} />
         ))}
-      </div>
-    </div>
+      </ul>
+    </article>
   );
 }
