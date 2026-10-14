@@ -1,93 +1,145 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useToast } from "./ui";
+import { usePublish } from "./usePublish";
 import styles from "./admin.module.css";
 
+export interface CvInfo {
+  size: number | null;
+  updatedAt: string | null;
+}
+
 const CV_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/cv/cv.pdf`;
-const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_SIZE = 5 * 1024 * 1024; // 5 MB, igual que el límite del bucket
 
-export default function CvUploader() {
-  const [msg, setMsg] = useState<{ type: "ok" | "error"; text: string } | null>(
-    null
+export const cvUrl = (info: CvInfo | null): string =>
+  info?.updatedAt ? `${CV_URL}?v=${encodeURIComponent(info.updatedAt)}` : CV_URL;
+
+export function formatSize(bytes: number | null): string {
+  if (bytes === null) return "";
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+export function formatDate(iso: string | null): string {
+  if (!iso) return "";
+  return new Intl.DateTimeFormat("es-AR", { dateStyle: "medium", timeStyle: "short" }).format(
+    new Date(iso)
   );
-  const [loading, setLoading] = useState(false);
-  const [version, setVersion] = useState(() => Date.now());
+}
 
-  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const input = e.target;
-    const file = input.files?.[0];
+export default function CvUploader({ info }: { info: CvInfo | null }) {
+  const supabase = useMemo(() => createClient(), []);
+  const { notify } = useToast();
+  const publish = usePublish();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [dragging, setDragging] = useState(false);
+
+  async function upload(file: File | undefined) {
     if (!file) return;
 
     if (file.type !== "application/pdf") {
-      setMsg({ type: "error", text: "Solo se permiten archivos PDF." });
-      input.value = "";
+      notify("error", "El currículum tiene que ser un archivo PDF.");
       return;
     }
-
     if (file.size > MAX_SIZE) {
-      setMsg({ type: "error", text: "El archivo supera los 5 MB." });
-      input.value = "";
+      notify("error", "El archivo supera los 5 MB. Probá con una versión más liviana.");
       return;
     }
 
-    setLoading(true);
-    setMsg(null);
-
-    const { error } = await createClient()
-      .storage.from("cv")
-      .upload("cv.pdf", file, {
-        upsert: true,
-        contentType: "application/pdf",
-        cacheControl: "60",
-      });
-
-    setLoading(false);
-    input.value = "";
+    setUploading(true);
+    const { error } = await supabase.storage.from("cv").upload("cv.pdf", file, {
+      upsert: true,
+      contentType: "application/pdf",
+      cacheControl: "60",
+    });
+    setUploading(false);
+    if (inputRef.current) inputRef.current.value = "";
 
     if (error) {
-      setMsg({ type: "error", text: error.message });
+      notify("error", error.message);
       return;
     }
 
-    setVersion(Date.now());
-    setMsg({ type: "ok", text: "CV actualizado." });
+    await publish();
+    notify("ok", "Currículum actualizado.");
   }
 
   return (
-    <div className={styles.card}>
-      <div className={styles.cardHeader}>
-        <div>
-          <h2 className={styles.cardTitle}>Currículum</h2>
-          <p className={styles.cardHint}>PDF · máximo 5 MB · reemplaza el actual</p>
-        </div>
-        <a
-          href={`${CV_URL}?v=${version}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.ghostBtn}
-        >
-          Ver CV actual
-        </a>
+    <div className={styles.panel}>
+      <div className={styles.panelHeader}>
+        <h2 className={styles.panelTitle}>Archivo publicado</h2>
+        <p className={styles.panelDescription}>
+          El botón «CV» del sitio descarga siempre este archivo. Al subir uno nuevo, reemplaza al anterior.
+        </p>
       </div>
 
-      <input
-        type="file"
-        accept="application/pdf"
-        onChange={handleChange}
-        disabled={loading}
-        className={styles.file}
-      />
+      <div className={styles.panelBody}>
+        {info ? (
+          <div className={styles.fileRow}>
+            <span className={styles.fileBadge}>PDF</span>
+            <div className={styles.fileBody}>
+              <span className={styles.fileName}>cv.pdf</span>
+              <span className={styles.fileMeta}>
+                {formatSize(info.size)}
+                {info.size !== null && info.updatedAt ? " · " : ""}
+                {info.updatedAt && (
+                  <>
+                    actualizado el <time suppressHydrationWarning>{formatDate(info.updatedAt)}</time>
+                  </>
+                )}
+              </span>
+            </div>
+            <a
+              className={styles.ghostBtn}
+              href={cvUrl(info)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Abrir
+            </a>
+          </div>
+        ) : (
+          <p className={styles.mutedText}>Todavía no hay un currículum cargado.</p>
+        )}
 
-      {loading && <p className={styles.cardHint}>Subiendo…</p>}
-      {msg && (
-        <p
-          role={msg.type === "error" ? "alert" : "status"}
-          className={msg.type === "error" ? styles.error : styles.success}
+        <div
+          className={`${styles.dropzone} ${dragging ? styles.dropzoneActive : ""}`}
+          onDragOver={(event) => {
+            event.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setDragging(false);
+            void upload(event.dataTransfer.files[0]);
+          }}
         >
-          {msg.text}
-        </p>
-      )}
+          <p className={styles.dropTitle}>
+            {uploading ? "Subiendo…" : info ? "Reemplazar el currículum" : "Subir el currículum"}
+          </p>
+          <p className={styles.mutedText}>Arrastrá un PDF acá o elegilo desde tu equipo. Máximo 5 MB.</p>
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            disabled={uploading}
+            onClick={() => inputRef.current?.click()}
+          >
+            Elegir PDF
+          </button>
+          <input
+            ref={inputRef}
+            type="file"
+            accept="application/pdf"
+            hidden
+            onChange={(event) => void upload(event.target.files?.[0])}
+          />
+        </div>
+      </div>
     </div>
   );
 }

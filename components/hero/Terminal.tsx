@@ -1,11 +1,17 @@
 "use client";
 
-import { terminalLines, TERMINAL_TITLE } from "@/data/terminal";
+import type { TerminalLine } from "@/types";
 import { useTerminalTypewriter } from "@/hooks/useTerminalTypewriter";
 import { renderTerminalLine } from "@/lib/terminalLineRenderers";
 
-export function Terminal() {
-  const revealedLines = useTerminalTypewriter(terminalLines);
+interface TerminalProps {
+  lines: TerminalLine[];
+  prompt: string;
+  title: string;
+}
+
+export function Terminal({ lines, prompt, title }: TerminalProps) {
+  const revealedLines = useTerminalTypewriter(lines);
 
   return (
     <div className="terminal">
@@ -13,12 +19,12 @@ export function Terminal() {
         <span className="dot dot-r" />
         <span className="dot dot-y" />
         <span className="dot dot-g" />
-        <span className="term-title">{TERMINAL_TITLE}</span>
+        <span className="term-title">{title}</span>
       </div>
       <div className="term-body">
         {revealedLines.map((revealed, index) => (
           <span className="tl" key={index}>
-            {renderTerminalLine(revealed.line, revealed)}
+            {renderTerminalLine(revealed.line, { ...revealed, prompt })}
           </span>
         ))}
       </div>

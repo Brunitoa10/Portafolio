@@ -1,7 +1,7 @@
-export function Footer() {
-  return (
-    <footer>
-      Bruno Ariel Parisi · construido con Next.js, TypeScript &amp; React · Bahía Blanca, Argentina
-    </footer>
-  );
+import { getSettings } from "@/lib/queries";
+
+export async function Footer() {
+  const { footerText } = await getSettings();
+
+  return <footer>{footerText}</footer>;
 }

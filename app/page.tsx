@@ -7,6 +7,12 @@ import { Projects } from "@/components/projects/Projects";
 import { Experience } from "@/components/experience/Experience";
 import { Contact } from "@/components/contact/Contact";
 
+/**
+ * Página estática: se regenera cuando el panel publica un cambio
+ * (revalidatePath) y, como red de seguridad, cada hora.
+ */
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <>

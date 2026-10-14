@@ -1,13 +1,15 @@
 import { Section } from "@/components/layout/Section";
-import { timeline } from "@/data/timeline";
+import { getTimeline } from "@/lib/queries";
 import { TimelineItem } from "./TimelineItem";
 
-export function Experience() {
+export async function Experience() {
+  const timeline = await getTimeline();
+
   return (
     <Section id="experiencia" eyebrow="// 04 · trayectoria" title="Experiencia">
       <div className="timeline">
-        {timeline.map((entry) => (
-          <TimelineItem key={entry.role} {...entry} />
+        {timeline.map((entry, index) => (
+          <TimelineItem key={`${entry.role}-${index}`} {...entry} />
         ))}
       </div>
     </Section>

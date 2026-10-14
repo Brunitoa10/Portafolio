@@ -1,14 +1,16 @@
 import { Section } from "@/components/layout/Section";
-import { contactIntro, contactLinks } from "@/data/contact";
+import { getContact } from "@/lib/queries";
 import { ContactLinkButton } from "./ContactLinkButton";
 
-export function Contact() {
+export async function Contact() {
+  const { intro, links } = await getContact();
+
   return (
     <Section id="contacto" eyebrow="// 05 · contacto" title="Hablemos" align="center">
-      <p className="contact-intro">{contactIntro}</p>
+      <p className="contact-intro">{intro}</p>
       <div className="contact-links">
-        {contactLinks.map((link) => (
-          <ContactLinkButton key={link.label} {...link} />
+        {links.map((link, index) => (
+          <ContactLinkButton key={`${link.label}-${index}`} {...link} />
         ))}
       </div>
     </Section>

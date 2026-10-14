@@ -1,7 +1,9 @@
-import { profile } from "@/data/profile";
+import { getProfile, getTerminal } from "@/lib/queries";
 import { Terminal } from "./Terminal";
 
-export function Hero() {
+export async function Hero() {
+  const [profile, terminal] = await Promise.all([getProfile(), getTerminal()]);
+
   return (
     <section id="hero">
       <div className="hero-inner">
@@ -26,7 +28,7 @@ export function Hero() {
           </div>
         </div>
 
-        <Terminal />
+        <Terminal {...terminal} />
       </div>
     </section>
   );

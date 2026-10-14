@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import type { TerminalLine } from "@/types";
-import { TERMINAL_PROMPT } from "@/data/terminal";
 
 interface RenderContext {
   typedText: string;
   done: boolean;
+  prompt: string;
 }
 
 type LineRenderer = (line: TerminalLine, ctx: RenderContext) => ReactNode;
@@ -20,7 +20,7 @@ const renderers: Record<TerminalLine["kind"], LineRenderer> = {
     if (line.kind !== "prompt") return null;
     return (
       <>
-        <span className="tp">{TERMINAL_PROMPT}</span>
+        <span className="tp">{ctx.prompt}</span>
         <span className="tc">{ctx.typedText}</span>
       </>
     );
@@ -30,9 +30,9 @@ const renderers: Record<TerminalLine["kind"], LineRenderer> = {
     return <span className={`to${line.accent === "cyan" ? " cy" : ""}`}>{line.text}</span>;
   },
   blank: () => <>&nbsp;</>,
-  cursor: () => (
+  cursor: (_line, ctx) => (
     <>
-      <span className="tp">{TERMINAL_PROMPT}</span>
+      <span className="tp">{ctx.prompt}</span>
       <span className="tcursor" />
     </>
   ),

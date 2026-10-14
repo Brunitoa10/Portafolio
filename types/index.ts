@@ -63,3 +63,24 @@ export interface StatItem {
   value: string;
   label: string;
 }
+
+/** Textos generales del sitio que no pertenecen a una sección en particular. */
+export interface SiteSettings {
+  contactIntro: string;
+  terminalPrompt: string;
+  terminalTitle: string;
+  footerText: string;
+  siteTitle: string;
+  siteDescription: string;
+}
+
+export interface TerminalContent {
+  lines: TerminalLine[];
+  prompt: string;
+  title: string;
+}
+
+export interface ContactContent {
+  intro: string;
+  links: ContactLink[];
+}
