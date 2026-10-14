@@ -14,6 +14,7 @@ import {
   type FormValues,
   type SingleRecord,
 } from "./resources";
+import { saveProfile } from "./profileGateway";
 import { useToast } from "./ui";
 import { usePublish } from "./usePublish";
 import styles from "./admin.module.css";
@@ -47,10 +48,7 @@ export default function ProfileEditor({ record }: { record: SingleRecord | null 
     setSaving(true);
     try {
       const payload = toPayload(PROFILE_FIELDS, values);
-      const { error } = await supabase
-        .from("profile")
-        .upsert({ id: 1, ...payload }, { onConflict: "id" });
-      if (error) throw new Error(error.message);
+      await saveProfile(supabase, payload);
 
       const saved = toFormValues(PROFILE_FIELDS, payload);
       setBaseline(saved);

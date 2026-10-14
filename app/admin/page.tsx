@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import AdminDashboard from "./AdminDashboard";
 import LogoutButton from "./LogoutButton";
-import type { CvInfo } from "./CvUploader";
+import type { CvInfo } from "./cv";
 import {
   RESOURCE_LIST,
   type ResourceKey,

@@ -1,27 +1,6 @@
 import { cache } from "react";
-import { createPublicClient } from "@/lib/supabase/public";
-import { projects as fallbackProjects } from "@/data/projects";
-import { skillCategories as fallbackSkills } from "@/data/skills";
-import { timeline as fallbackTimeline } from "@/data/timeline";
-import {
-  aboutParagraphs as fallbackAbout,
-  profile as fallbackProfile,
-  stats as fallbackStats,
-} from "@/data/profile";
-import {
-  contactIntro as fallbackContactIntro,
-  contactLinks as fallbackContactLinks,
-} from "@/data/contact";
-import {
-  terminalLines as fallbackTerminalLines,
-  TERMINAL_PROMPT,
-  TERMINAL_TITLE,
-} from "@/data/terminal";
 import type {
-  AccentColor,
   ContactContent,
-  ContactIconName,
-  ContactLink,
   Profile,
   Project,
   SiteSettings,
@@ -31,276 +10,121 @@ import type {
   TerminalLine,
   TimelineEntry,
 } from "@/types";
+import { DEFAULT_SETTINGS, fallbacks } from "@/lib/content/fallbacks";
+import {
+  toAboutParagraph,
+  toContactLinks,
+  toProfile,
+  toProject,
+  toSettings,
+  toSkill,
+  toStat,
+  toTerminalLine,
+  toTimelineEntry,
+} from "@/lib/content/mappers";
+import { createListRepository, createRawListReader } from "@/lib/content/repositories";
+import type {
+  AboutRow,
+  ContactRow,
+  ProfileRow,
+  ProjectRow,
+  SkillRow,
+  StatRow,
+  TerminalRow,
+  TimelineRow,
+} from "@/lib/content/rows";
+import { supabaseSource } from "@/lib/content/source";
 
 /**
- * Lectura del contenido público desde Supabase.
+ * Fachada de lectura del contenido público.
  *
- * Regla general: si Supabase falla (variables sin cargar, red, tabla
- * inexistente), el sitio sigue mostrando los datos locales de data/.
- * Si la consulta funciona y la tabla está vacía, la sección queda vacía:
- * lo que borrás desde el panel no reaparece.
+ * Los componentes llaman a estas funciones y no saben de dónde salen los
+ * datos. Cada una está envuelta en `cache` para que una misma petición no
+ * repita consultas. Si Supabase falla se usa el contenido local de data/.
  */
 
-type SortDirection = "asc" | "desc";
+const source = supabaseSource;
 
-async function readTable<Row>(
-  table: string,
-  direction: SortDirection = "asc"
-): Promise<Row[] | null> {
-  try {
-    const ascending = direction === "asc";
-    const { data, error } = await createPublicClient()
-      .from(table)
-      .select("*")
-      .order("sort_order", { ascending })
-      .order("id", { ascending });
-
-    if (error || !data) {
-      console.error(`[queries] ${table}:`, error?.message);
-      return null;
-    }
-    return data as Row[];
-  } catch (error) {
-    console.error(`[queries] ${table}:`, error);
-    return null;
-  }
-}
-
-async function readMapped<Row, Item>(
-  table: string,
-  direction: SortDirection,
-  fallback: Item[],
-  toItem: (row: Row) => Item
-): Promise<Item[]> {
-  const rows = await readTable<Row>(table, direction);
-  return rows ? rows.map(toItem) : fallback;
-}
-
-/* ---------- Proyectos ---------- */
-
-interface ProjectRow {
-  name: string;
-  icon: string | null;
-  wide: boolean;
-  link_label: string | null;
-  href: string | null;
-  description: string | null;
-  tags: Project["tags"] | null;
-}
-
-const toProject = (row: ProjectRow): Project => ({
-  name: row.name,
-  icon: row.icon ?? "",
-  wide: row.wide,
-  linkLabel: row.link_label ?? undefined,
-  href: row.href ?? undefined,
-  description: row.description ?? "",
-  tags: row.tags ?? [],
+const projectsRepo = createListRepository<ProjectRow, Project>(source, {
+  table: "projects",
+  direction: "asc",
+  fallback: fallbacks.projects,
+  map: toProject,
 });
 
-export const getProjects = cache(() =>
-  readMapped<ProjectRow, Project>("projects", "asc", fallbackProjects, toProject)
-);
-
-/* ---------- Skills ---------- */
-
-interface SkillRow {
-  label: string;
-  accent: AccentColor;
-  items: string[] | null;
-}
-
-const toSkill = (row: SkillRow): SkillCategory => ({
-  label: row.label,
-  accent: row.accent,
-  items: row.items ?? [],
+const skillsRepo = createListRepository<SkillRow, SkillCategory>(source, {
+  table: "skill_categories",
+  direction: "asc",
+  fallback: fallbacks.skills,
+  map: toSkill,
 });
 
-export const getSkills = cache(() =>
-  readMapped<SkillRow, SkillCategory>("skill_categories", "asc", fallbackSkills, toSkill)
-);
-
-/* ---------- Experiencia (lo más reciente primero) ---------- */
-
-interface TimelineRow {
-  period: string;
-  role: string;
-  company: string;
-  items: string[] | null;
-}
-
-const toTimelineEntry = (row: TimelineRow): TimelineEntry => ({
-  date: row.period,
-  role: row.role,
-  company: row.company,
-  items: row.items ?? [],
+// Experiencia: mayor sort_order = aparece primero.
+const timelineRepo = createListRepository<TimelineRow, TimelineEntry>(source, {
+  table: "timeline",
+  direction: "desc",
+  fallback: fallbacks.timeline,
+  map: toTimelineEntry,
 });
 
-export const getTimeline = cache(() =>
-  readMapped<TimelineRow, TimelineEntry>("timeline", "desc", fallbackTimeline, toTimelineEntry)
-);
+const aboutRepo = createListRepository<AboutRow, string>(source, {
+  table: "about_paragraphs",
+  direction: "asc",
+  fallback: fallbacks.about,
+  map: toAboutParagraph,
+});
 
-/* ---------- Sobre mí y estadísticas ---------- */
+const statsRepo = createListRepository<StatRow, StatItem>(source, {
+  table: "stats",
+  direction: "asc",
+  fallback: fallbacks.stats,
+  map: toStat,
+});
 
-export const getAbout = cache(() =>
-  readMapped<{ content: string }, string>(
-    "about_paragraphs",
-    "asc",
-    fallbackAbout,
-    (row) => row.content
-  )
-);
+const terminalRepo = createListRepository<TerminalRow, TerminalLine>(source, {
+  table: "terminal_lines",
+  direction: "asc",
+  fallback: fallbacks.terminalLines,
+  map: toTerminalLine,
+});
 
-export const getStats = cache(() =>
-  readMapped<StatItem, StatItem>("stats", "asc", fallbackStats, (row) => ({
-    value: row.value,
-    label: row.label,
-  }))
-);
+const readContactRows = createRawListReader<ContactRow>(source, "contact_links", "asc");
 
-/* ---------- Perfil y ajustes del sitio (una sola fila) ---------- */
+export const getProjects = cache(() => projectsRepo.findAll());
+export const getSkills = cache(() => skillsRepo.findAll());
+export const getTimeline = cache(() => timelineRepo.findAll());
+export const getAbout = cache(() => aboutRepo.findAll());
+export const getStats = cache(() => statsRepo.findAll());
 
-interface ProfileRow {
-  name: string;
-  highlighted_name: string | null;
-  role: string | null;
-  location: string | null;
-  tagline: string | null;
-  description: string | null;
-  contact_intro: string | null;
-  terminal_prompt: string | null;
-  terminal_title: string | null;
-  footer_text: string | null;
-  site_title: string | null;
-  site_description: string | null;
-}
+/* ---------- Perfil y ajustes (una sola fila compartida) ---------- */
 
 const getProfileRow = cache(async (): Promise<ProfileRow | null> => {
-  try {
-    const { data, error } = await createPublicClient()
-      .from("profile")
-      .select("*")
-      .eq("id", 1)
-      .maybeSingle();
-
-    if (error) {
-      console.error("[queries] profile:", error.message);
-      return null;
-    }
-    return (data as ProfileRow | null) ?? null;
-  } catch (error) {
-    console.error("[queries] profile:", error);
-    return null;
-  }
+  const row = await source.readSingle<ProfileRow>("profile", 1);
+  return row ?? null;
 });
 
 export const getProfile = cache(async (): Promise<Profile> => {
   const row = await getProfileRow();
-  if (!row) return fallbackProfile;
-
-  return {
-    name: row.name,
-    highlightedName: row.highlighted_name ?? "",
-    role: row.role ?? "",
-    location: row.location ?? "",
-    tagline: row.tagline ?? "",
-    description: row.description ?? "",
-  };
+  return row ? toProfile(row) : fallbacks.profile;
 });
-
-const DEFAULT_SETTINGS: SiteSettings = {
-  contactIntro: fallbackContactIntro,
-  terminalPrompt: TERMINAL_PROMPT,
-  terminalTitle: TERMINAL_TITLE,
-  footerText:
-    "Bruno Ariel Parisi · construido con Next.js, TypeScript & React · Bahía Blanca, Argentina",
-  siteTitle: "Bruno Ariel Parisi · IT Specialist",
-  siteDescription:
-    "Portfolio de Bruno Ariel Parisi — IT Field Specialist en Bahía Blanca, Argentina.",
-};
 
 export const getSettings = cache(async (): Promise<SiteSettings> => {
   const row = await getProfileRow();
-  if (!row) return DEFAULT_SETTINGS;
-
-  return {
-    contactIntro: row.contact_intro ?? "",
-    terminalPrompt: row.terminal_prompt ?? "",
-    terminalTitle: row.terminal_title ?? "",
-    footerText: row.footer_text ?? DEFAULT_SETTINGS.footerText,
-    siteTitle: row.site_title ?? DEFAULT_SETTINGS.siteTitle,
-    siteDescription: row.site_description ?? DEFAULT_SETTINGS.siteDescription,
-  };
+  return row ? toSettings(row, DEFAULT_SETTINGS) : DEFAULT_SETTINGS;
 });
 
-/* ---------- Contacto ---------- */
-
-interface ContactRow {
-  icon: string;
-  label: string;
-  href: string;
-  external: boolean;
-}
-
-const CONTACT_ICONS: readonly ContactIconName[] = ["github", "email", "linkedin"];
-
-const isContactIcon = (value: string): value is ContactIconName =>
-  (CONTACT_ICONS as readonly string[]).includes(value);
-
-const toContactLinks = (rows: ContactRow[]): ContactLink[] =>
-  rows
-    .filter((row) => isContactIcon(row.icon))
-    .map((row) => ({
-      icon: row.icon as ContactIconName,
-      label: row.label,
-      href: row.href,
-      external: row.external,
-    }));
+/* ---------- Contenidos que combinan varias fuentes ---------- */
 
 export const getContact = cache(async (): Promise<ContactContent> => {
-  const [rows, settings] = await Promise.all([
-    readTable<ContactRow>("contact_links", "asc"),
-    getSettings(),
-  ]);
-
+  const [rows, settings] = await Promise.all([readContactRows(), getSettings()]);
   return {
     intro: settings.contactIntro,
-    links: rows ? toContactLinks(rows) : fallbackContactLinks,
+    links: rows ? toContactLinks(rows) : fallbacks.contactLinks,
   };
 });
 
-/* ---------- Terminal del hero ---------- */
-
-interface TerminalRow {
-  kind: TerminalLine["kind"];
-  text: string | null;
-  accent: AccentColor | null;
-}
-
-function toTerminalLine(row: TerminalRow): TerminalLine {
-  switch (row.kind) {
-    case "prompt":
-      return { kind: "prompt", text: row.text ?? "" };
-    case "output":
-      return { kind: "output", text: row.text ?? "", accent: row.accent ?? undefined };
-    case "blank":
-      return { kind: "blank" };
-    default:
-      return { kind: "cursor" };
-  }
-}
-
 export const getTerminal = cache(async (): Promise<TerminalContent> => {
-  const [lines, settings] = await Promise.all([
-    readMapped<TerminalRow, TerminalLine>(
-      "terminal_lines",
-      "asc",
-      fallbackTerminalLines,
-      toTerminalLine
-    ),
-    getSettings(),
-  ]);
-
+  const [lines, settings] = await Promise.all([terminalRepo.findAll(), getSettings()]);
   return {
     lines,
     prompt: settings.terminalPrompt,

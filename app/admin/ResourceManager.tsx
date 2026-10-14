@@ -4,8 +4,11 @@ import { useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { FieldControl } from "./FieldControl";
 import {
+  clampPosition,
   defaultPosition,
   isVisible,
+  placeAt,
+  swapWithNeighbour,
   toFormValues,
   toPayload,
   validate,
@@ -14,6 +17,7 @@ import {
   type ResourceDef,
   type Row,
 } from "./resources";
+import { createResourceGateway } from "./resourceGateway";
 import { ConfirmDialog, Drawer, useToast } from "./ui";
 import { usePublish } from "./usePublish";
 import styles from "./admin.module.css";
@@ -29,7 +33,7 @@ type DrawerState = { mode: "create" } | { mode: "edit"; row: Row } | null;
 const SEARCH_THRESHOLD = 6;
 
 export default function ResourceManager({ def, rows }: ResourceManagerProps) {
-  const supabase = useMemo(() => createClient(), []);
+  const gateway = useMemo(() => createResourceGateway(createClient(), def), [def]);
   const { notify } = useToast();
   const publish = usePublish();
 
@@ -49,27 +53,6 @@ export default function ResourceManager({ def, rows }: ResourceManagerProps) {
     ? summaries.filter((item) => `${item.title} ${item.meta}`.toLowerCase().includes(needle))
     : summaries;
   const canReorder = !needle && !busy;
-
-  /* ───────── operaciones contra Supabase ───────── */
-
-  /** Reasigna `sort_order` según el orden de `ids` y guarda solo lo que cambió. */
-  async function applyOrder(ids: number[]) {
-    const total = ids.length;
-    const current = new Map(rows.map((row) => [row.id, row.sort_order]));
-
-    const changes = ids
-      .map((id, index) => ({ id, order: def.direction === "asc" ? index + 1 : total - index }))
-      .filter((change) => current.get(change.id) !== change.order);
-
-    const results = await Promise.all(
-      changes.map((change) =>
-        supabase.from(def.table).update({ sort_order: change.order }).eq("id", change.id).select("id")
-      )
-    );
-
-    const failed = results.find((result) => result.error || !result.data?.length);
-    if (failed) throw new Error(failed.error?.message ?? "Sin permisos para reordenar.");
-  }
 
   /** Ejecuta una acción, publica el sitio y avisa el resultado. */
   async function run(action: () => Promise<void>, successText: string): Promise<boolean> {
@@ -117,58 +100,35 @@ export default function ResourceManager({ def, rows }: ResourceManagerProps) {
     }
 
     const payload = toPayload(def.fields, values);
-    const target = Math.min(Math.max(Math.trunc(Number(position)) || 1, 1), totalAfterSave);
+    const target = clampPosition(position, totalAfterSave);
 
     const saved = await run(async () => {
       let id: number;
-
       if (editing) {
-        const { data, error } = await supabase
-          .from(def.table)
-          .update(payload)
-          .eq("id", editing.id)
-          .select("id");
-        if (error) throw new Error(error.message);
-        if (!data?.length) throw new Error("Sin permisos para modificar este registro.");
+        await gateway.update(editing.id, payload);
         id = editing.id;
       } else {
-        const nextOrder = rows.length ? Math.max(...rows.map((row) => row.sort_order)) + 1 : 1;
-        const { data, error } = await supabase
-          .from(def.table)
-          .insert({ ...payload, sort_order: nextOrder })
-          .select("id")
-          .single();
-        if (error) throw new Error(error.message);
-        id = data.id as number;
+        id = await gateway.create(payload, rows);
       }
 
-      const ids = rows.map((row) => row.id).filter((rowId) => rowId !== id);
-      ids.splice(target - 1, 0, id);
-      await applyOrder(ids);
+      const ids = placeAt(rows.map((row) => row.id), id, target);
+      await gateway.reorder(ids, rows);
     }, editing ? "Cambios guardados y publicados." : `Se agregó el ${def.noun} y ya está publicado.`);
 
     if (saved) closeDrawer();
   }
 
   async function move(row: Row, delta: -1 | 1) {
-    const ids = rows.map((r) => r.id);
-    const from = ids.indexOf(row.id);
-    const to = from + delta;
-    if (to < 0 || to >= ids.length) return;
-
-    [ids[from], ids[to]] = [ids[to], ids[from]];
-    await run(() => applyOrder(ids), "Orden actualizado.");
+    const ids = swapWithNeighbour(rows.map((r) => r.id), row.id, delta);
+    if (!ids) return;
+    await run(() => gateway.reorder(ids, rows), "Orden actualizado.");
   }
 
   async function confirmDelete() {
     if (!pendingDelete) return;
     const row = pendingDelete;
 
-    const deleted = await run(async () => {
-      const { data, error } = await supabase.from(def.table).delete().eq("id", row.id).select("id");
-      if (error) throw new Error(error.message);
-      if (!data?.length) throw new Error("Sin permisos para eliminar este registro.");
-    }, `Se eliminó el ${def.noun}.`);
+    const deleted = await run(() => gateway.remove(row.id), `Se eliminó el ${def.noun}.`);
 
     if (deleted) setPendingDelete(null);
   }

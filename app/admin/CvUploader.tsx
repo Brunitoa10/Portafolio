@@ -3,32 +3,9 @@
 import { useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "./ui";
+import { cvUrl, formatDate, formatSize, uploadCv, validateCvFile, type CvInfo } from "./cv";
 import { usePublish } from "./usePublish";
 import styles from "./admin.module.css";
-
-export interface CvInfo {
-  size: number | null;
-  updatedAt: string | null;
-}
-
-const CV_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/cv/cv.pdf`;
-const MAX_SIZE = 5 * 1024 * 1024; // 5 MB, igual que el límite del bucket
-
-export const cvUrl = (info: CvInfo | null): string =>
-  info?.updatedAt ? `${CV_URL}?v=${encodeURIComponent(info.updatedAt)}` : CV_URL;
-
-export function formatSize(bytes: number | null): string {
-  if (bytes === null) return "";
-  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-export function formatDate(iso: string | null): string {
-  if (!iso) return "";
-  return new Intl.DateTimeFormat("es-AR", { dateStyle: "medium", timeStyle: "short" }).format(
-    new Date(iso)
-  );
-}
 
 export default function CvUploader({ info }: { info: CvInfo | null }) {
   const supabase = useMemo(() => createClient(), []);
@@ -41,27 +18,21 @@ export default function CvUploader({ info }: { info: CvInfo | null }) {
   async function upload(file: File | undefined) {
     if (!file) return;
 
-    if (file.type !== "application/pdf") {
-      notify("error", "El currículum tiene que ser un archivo PDF.");
-      return;
-    }
-    if (file.size > MAX_SIZE) {
-      notify("error", "El archivo supera los 5 MB. Probá con una versión más liviana.");
+    const problem = validateCvFile(file);
+    if (problem) {
+      notify("error", problem);
       return;
     }
 
     setUploading(true);
-    const { error } = await supabase.storage.from("cv").upload("cv.pdf", file, {
-      upsert: true,
-      contentType: "application/pdf",
-      cacheControl: "60",
-    });
-    setUploading(false);
-    if (inputRef.current) inputRef.current.value = "";
-
-    if (error) {
-      notify("error", error.message);
+    try {
+      await uploadCv(supabase, file);
+    } catch (error) {
+      notify("error", error instanceof Error ? error.message : "No se pudo subir el archivo.");
       return;
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
     }
 
     await publish();

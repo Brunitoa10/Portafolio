@@ -1,7 +1,7 @@
 "use client";
 
 import { RESOURCES, type ResourceKey, type TabKey } from "./resources";
-import { cvUrl, formatDate, formatSize, type CvInfo } from "./CvUploader";
+import { cvUrl, formatDate, formatSize, type CvInfo } from "./cv";
 import styles from "./admin.module.css";
 
 interface OverviewProps {

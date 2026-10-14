@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import CvUploader, { type CvInfo } from "./CvUploader";
+import CvUploader from "./CvUploader";
+import type { CvInfo } from "./cv";
 import LogoutButton from "./LogoutButton";
 import Overview from "./Overview";
 import ProfileEditor from "./ProfileEditor";
