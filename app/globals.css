@@ -50,7 +50,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2.5rem;
+  padding: 1rem max(2.5rem, calc((100% - 1100px) / 2 + 2rem));
   background: rgba(7, 11, 15, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -460,6 +460,19 @@ section {
   background: var(--bg);
   border: 2px solid var(--green);
   box-shadow: 0 0 8px rgba(0, 255, 157, 0.3);
+}
+@media (min-width: 901px) {
+  .tl-item {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    column-gap: 2.5rem;
+    align-items: start;
+  }
+  .tl-item .tl-date { grid-column: 1; grid-row: 1 / span 3; padding-top: 0.2rem; margin-bottom: 0; }
+  .tl-item .tl-role,
+  .tl-item .tl-company,
+  .tl-item .tl-items { grid-column: 2; }
+  .tl-items { max-width: 62ch; }
 }
 .tl-date { font-family: var(--mono); font-size: 0.68rem; color: var(--green); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
 .tl-role { font-family: var(--mono); font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
