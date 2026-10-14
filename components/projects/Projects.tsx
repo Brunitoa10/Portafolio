@@ -1,8 +1,10 @@
 import { Section } from "@/components/layout/Section";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/lib/queries";
 import { ProjectCard } from "./ProjectCard";
 
-export function Projects() {
+export async function Projects() {
+  const projects = await getProjects();
+
   return (
     <Section id="proyectos" eyebrow="// 03 · proyectos" title="Lo que construí">
       <div className="projects-layout">
