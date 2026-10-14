@@ -109,6 +109,17 @@ alter table profile
   add column if not exists site_title text,
   add column if not exists site_description text;
 
+-- Enlaces de los proyectos: una lista de {label, url} por proyecto.
+alter table projects
+  add column if not exists links jsonb not null default '[]';
+
+-- Proyectos cargados antes de esta columna: copia su enlace único a la lista.
+update projects
+set links = jsonb_build_array(
+  jsonb_build_object('label', coalesce(nullif(link_label, ''), 'Enlace'), 'url', href)
+)
+where links = '[]'::jsonb and coalesce(href, '') <> '';
+
 
 -- ---------------------------------------------------------------------
 -- 3. Seguridad: lectura pública, escritura solo para el administrador
@@ -244,49 +255,49 @@ $seed$;
 do $seed$
 begin
   if not exists (select 1 from projects) then
-    insert into projects (name, icon, wide, link_label, href, description, tags, sort_order) values
+    insert into projects (name, icon, wide, link_label, href, description, tags, links, sort_order) values
     ('GitHub', '📡', true, '⌥ GitHub', 'https://github.com/Brunitoa10',
      'Herramienta de monitoreo de red para la planta industrial de Bunge. Visualiza topología en tiempo real, detecta dispositivos caídos y genera alertas. Stack Python + Bash + Java + HTML. Portfolio piece & utility real.',
-     '[{"label":"Python","accent":"green"},{"label":"Bash","accent":"green"},{"label":"Networking","accent":"cyan"},{"label":"Java","accent":"cyan"},{"label":"HTML","accent":"green"}]'::jsonb, 1),
+     '[{"label":"Python","accent":"green"},{"label":"Bash","accent":"green"},{"label":"Networking","accent":"cyan"},{"label":"Java","accent":"cyan"},{"label":"HTML","accent":"green"}]'::jsonb, '[{"label":"⌥ GitHub","url":"https://github.com/Brunitoa10"}]'::jsonb, 1),
     ('prometeo', '🔥', false, '⌥ GitHub', 'https://github.com/TU_USUARIO/prometeo',
      'Repo personal de herramientas IT. Scripts de automatización, utilidades de red y diagnóstico para entornos de campo. Filosofía: production-ready desde el día uno.',
-     '[{"label":"Python","accent":"green"},{"label":"Bash","accent":"green"},{"label":"Open Source","accent":"cyan"}]'::jsonb, 2),
+     '[{"label":"Python","accent":"green"},{"label":"Bash","accent":"green"},{"label":"Open Source","accent":"cyan"}]'::jsonb, '[{"label":"⌥ GitHub","url":"https://github.com/TU_USUARIO/prometeo"}]'::jsonb, 2),
     ('Topología de Red — Bunge BB', '🗺️', false, null, null,
      'Documentación visual completa de la infraestructura: NOC, oficinas, piso de producción, calado de camiones y garita. Vista técnica y para usuarios finales.',
-     '[{"label":"draw.io","accent":"cyan"},{"label":"Networking","accent":"green"},{"label":"Documentación","accent":"cyan"}]'::jsonb, 3),
+     '[{"label":"draw.io","accent":"cyan"},{"label":"Networking","accent":"green"},{"label":"Documentación","accent":"cyan"}]'::jsonb, '[]'::jsonb, 3),
     ('Kali Security Lab', '🔐', false, null, null,
      'Lab de hacking ético parrot - kali linux. Configuración de theHarvester, Sherlock, recon-ng, Kismet y macchanger para OSINT y análisis de red.',
-     '[{"label":"Kali","accent":"green"},{"label":"Docker","accent":"cyan"},{"label":"OSINT","accent":"green"}]'::jsonb, 4),
+     '[{"label":"Kali","accent":"green"},{"label":"Docker","accent":"cyan"},{"label":"OSINT","accent":"green"}]'::jsonb, '[]'::jsonb, 4),
     ('2048', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/2048',
      'El 2048 es un juego de puzzle y estrategia cuyo objetivo es lanzar y combinar bloques numerados.',
-     '[{"label":"ReactJS","accent":"green"},{"label":"Prolog","accent":"cyan"}]'::jsonb, 5),
+     '[{"label":"ReactJS","accent":"green"},{"label":"Prolog","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/2048"}]'::jsonb, 5),
     ('DISO|Digital Solutions', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/DISO_DigitalSolutions_webReact',
      'Plataforma innovadora para la transformación digital de negocios.',
-     '[{"label":"ReactJS","accent":"green"}]'::jsonb, 6),
+     '[{"label":"ReactJS","accent":"green"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/DISO_DigitalSolutions_webReact"}]'::jsonb, 6),
     ('DriveNow Car', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/DriveNow-RentalCar',
      'Aplicación de alquiler de coches con integración de Stripe.',
-     '[{"label":"Nextjs","accent":"green"},{"label":"Prisma","accent":"cyan"},{"label":"Neon","accent":"green"},{"label":"TailwindCSS","accent":"cyan"}]'::jsonb, 7),
+     '[{"label":"Nextjs","accent":"green"},{"label":"Prisma","accent":"cyan"},{"label":"Neon","accent":"green"},{"label":"TailwindCSS","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/DriveNow-RentalCar"}]'::jsonb, 7),
     ('Super Marios Bros', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/SuperMarioBros',
      'Versión mejorada del clásico con arquitectura modular y nuevos desafíos.',
-     '[{"label":"Java","accent":"green"},{"label":"Patrones de diseño","accent":"cyan"},{"label":"SOLID","accent":"green"},{"label":"Clean code","accent":"cyan"}]'::jsonb, 8),
+     '[{"label":"Java","accent":"green"},{"label":"Patrones de diseño","accent":"cyan"},{"label":"SOLID","accent":"green"},{"label":"Clean code","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/SuperMarioBros"}]'::jsonb, 8),
     ('Cuena Bancaria', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/CuentaBancaria',
      'Operaciones como depósitos, retiros y transferencias.',
-     '[{"label":"Java","accent":"green"},{"label":"Polimorfismo","accent":"cyan"},{"label":"Herencia","accent":"green"},{"label":"Generalizacion","accent":"cyan"}]'::jsonb, 9),
+     '[{"label":"Java","accent":"green"},{"label":"Polimorfismo","accent":"cyan"},{"label":"Herencia","accent":"green"},{"label":"Generalizacion","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/CuentaBancaria"}]'::jsonb, 9),
     ('Gestion de Directorios', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/Gestion_de_Directorios',
      'Carpeta Documentos de Windows.',
-     '[{"label":"Java","accent":"green"},{"label":"Estructuras de datos","accent":"cyan"}]'::jsonb, 10),
+     '[{"label":"Java","accent":"green"},{"label":"Estructuras de datos","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/Gestion_de_Directorios"}]'::jsonb, 10),
     ('Cuenta Palabras', '👨🏽‍💻', false, '⌥ code', 'https://github.com/Brunitoa10/CuentaPalabras',
      'Cuenta repeticiones de palabras y palabras más usadas.',
-     '[{"label":"C","accent":"green"},{"label":"Headers","accent":"cyan"},{"label":"multiset","accent":"green"}]'::jsonb, 11),
+     '[{"label":"C","accent":"green"},{"label":"Headers","accent":"cyan"},{"label":"multiset","accent":"green"}]'::jsonb, '[{"label":"⌥ code","url":"https://github.com/Brunitoa10/CuentaPalabras"}]'::jsonb, 11),
     ('Chau Naranja', '👨🏽‍💻', false, '⌥ code', 'https://chaunaranja.vercel.app/',
      'Sitio web para peluquería, con reserva de turnos online.',
-     '[{"label":"NextJS","accent":"green"},{"label":"En desarrollo","accent":"cyan"}]'::jsonb, 12),
+     '[{"label":"NextJS","accent":"green"},{"label":"En desarrollo","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://chaunaranja.vercel.app/"}]'::jsonb, 12),
     ('BBRAS', '👨🏽‍💻', false, '⌥ code', 'https://bbras.vercel.app/',
      'Sitio para WEB brigada de búsqueda, rescate, ayuda y socorrismo.',
-     '[{"label":"NextJS","accent":"green"},{"label":"En desarrollo","accent":"cyan"}]'::jsonb, 13),
+     '[{"label":"NextJS","accent":"green"},{"label":"En desarrollo","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://bbras.vercel.app/"}]'::jsonb, 13),
     ('Nemesis Solutions', '👨🏽‍💻', false, '⌥ code', 'https://nemesis-solutions.vercel.app/',
      'Web soporte TI y desarrollo de software',
-     '[{"label":"NextJS","accent":"green"},{"label":"En desarrollo","accent":"cyan"}]'::jsonb, 14);
+     '[{"label":"NextJS","accent":"green"},{"label":"En desarrollo","accent":"cyan"}]'::jsonb, '[{"label":"⌥ code","url":"https://nemesis-solutions.vercel.app/"}]'::jsonb, 14);
   end if;
 end
 $seed$;

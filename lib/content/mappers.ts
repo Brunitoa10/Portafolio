@@ -3,6 +3,7 @@ import type {
   ContactLink,
   Profile,
   Project,
+  ProjectLink,
   SiteSettings,
   SkillCategory,
   StatItem,
@@ -22,14 +23,23 @@ import type {
 
 /** Funciones puras: fila de la base → modelo del sitio. */
 
+/**
+ * Enlaces del proyecto. Mientras la columna `links` no exista (migración
+ * pendiente) se usa el enlace único anterior; una vez migrada, `links`
+ * manda aunque esté vacía.
+ */
+function toProjectLinks(row: ProjectRow): ProjectLink[] {
+  if (row.links) return row.links.filter((link) => link.label && link.url);
+  return row.href ? [{ label: row.link_label || "Enlace", url: row.href }] : [];
+}
+
 export const toProject = (row: ProjectRow): Project => ({
   name: row.name,
   icon: row.icon ?? "",
   wide: row.wide,
-  linkLabel: row.link_label ?? undefined,
-  href: row.href ?? undefined,
   description: row.description ?? "",
   tags: row.tags ?? [],
+  links: toProjectLinks(row),
 });
 
 export const toSkill = (row: SkillRow): SkillCategory => ({

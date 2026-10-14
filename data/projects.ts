@@ -5,8 +5,7 @@ export const projects: Project[] = [
     name: "GitHub",
     icon: "📡",
     wide: true,
-    linkLabel: "⌥ GitHub",
-    href: "https://github.com/Brunitoa10",
+    links: [{ label: "⌥ GitHub", url: "https://github.com/Brunitoa10" }],
     description:
       "Herramienta de monitoreo de red para la planta industrial de Bunge. Visualiza topología en tiempo real, detecta dispositivos caídos y genera alertas. Stack Python + Bash + Java + HTML. Portfolio piece & utility real.",
     tags: [
@@ -20,8 +19,7 @@ export const projects: Project[] = [
   {
     name: "prometeo",
     icon: "🔥",
-    linkLabel: "⌥ GitHub",
-    href: "https://github.com/TU_USUARIO/prometeo",
+    links: [{ label: "⌥ GitHub", url: "https://github.com/TU_USUARIO/prometeo" }],
     description:
       "Repo personal de herramientas IT. Scripts de automatización, utilidades de red y diagnóstico para entornos de campo. Filosofía: production-ready desde el día uno.",
     tags: [
@@ -33,6 +31,7 @@ export const projects: Project[] = [
   {
     name: "Topología de Red — Bunge BB",
     icon: "🗺️",
+    links: [],
     description:
       "Documentación visual completa de la infraestructura: NOC, oficinas, piso de producción, calado de camiones y garita. Vista técnica y para usuarios finales.",
     tags: [
@@ -44,6 +43,7 @@ export const projects: Project[] = [
   {
     name: "Kali Security Lab",
     icon: "🔐",
+    links: [],
     description:
       "Lab de hacking ético parrot - kali linux. Configuración de theHarvester, Sherlock, recon-ng, Kismet y macchanger para OSINT y análisis de red.",
       tags: [
@@ -55,8 +55,7 @@ export const projects: Project[] = [
   {
     name: "2048",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://github.com/Brunitoa10/2048",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/2048" }],
     description:
       "El 2048 es un juego de puzzle y estrategia cuyo objetivo es lanzar y combinar bloques numerados.",
     tags: [
@@ -67,8 +66,7 @@ export const projects: Project[] = [
    {
     name: "DISO|Digital Solutions",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://github.com/Brunitoa10/DISO_DigitalSolutions_webReact",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/DISO_DigitalSolutions_webReact" }],
     description:
       "Plataforma innovadora para la transformación digital de negocios.",
     tags: [
@@ -78,8 +76,7 @@ export const projects: Project[] = [
    {
     name: "DriveNow Car",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://github.com/Brunitoa10/DriveNow-RentalCar",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/DriveNow-RentalCar" }],
     description:
       "Aplicación de alquiler de coches con integración de Stripe.",
     tags: [
@@ -92,8 +89,7 @@ export const projects: Project[] = [
   {
     name: "Super Marios Bros",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://github.com/Brunitoa10/SuperMarioBros",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/SuperMarioBros" }],
     description:
       "Versión mejorada del clásico con arquitectura modular y nuevos desafíos.",
     tags: [
@@ -106,8 +102,7 @@ export const projects: Project[] = [
    {
     name: "Cuena Bancaria",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href:  "https://github.com/Brunitoa10/CuentaBancaria",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/CuentaBancaria" }],
     description:
       "Operaciones como depósitos, retiros y transferencias.",
     tags: [
@@ -120,8 +115,7 @@ export const projects: Project[] = [
   {
     name: "Gestion de Directorios",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href:   "https://github.com/Brunitoa10/Gestion_de_Directorios",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/Gestion_de_Directorios" }],
     description:
       "Carpeta Documentos de Windows.",
     tags: [
@@ -132,8 +126,7 @@ export const projects: Project[] = [
    {
     name: "Cuenta Palabras",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href:   "https://github.com/Brunitoa10/CuentaPalabras",
+    links: [{ label: "⌥ code", url: "https://github.com/Brunitoa10/CuentaPalabras" }],
     description:
       "Cuenta repeticiones de palabras y palabras más usadas.",
     tags: [
@@ -145,8 +138,7 @@ export const projects: Project[] = [
   {
     name: "Chau Naranja",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://chaunaranja.vercel.app/",
+    links: [{ label: "⌥ code", url: "https://chaunaranja.vercel.app/" }],
     description:
       "Sitio web para peluquería, con reserva de turnos online.",
     tags: [
@@ -157,8 +149,7 @@ export const projects: Project[] = [
   {
     name: "BBRAS",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://bbras.vercel.app/",
+    links: [{ label: "⌥ code", url: "https://bbras.vercel.app/" }],
     description:
       "Sitio para WEB brigada de búsqueda, rescate, ayuda y socorrismo.",
     tags: [
@@ -169,8 +160,7 @@ export const projects: Project[] = [
   {
     name: "Nemesis Solutions",
     icon: "👨🏽‍💻",
-    linkLabel: "⌥ code",
-    href: "https://nemesis-solutions.vercel.app/",
+    links: [{ label: "⌥ code", url: "https://nemesis-solutions.vercel.app/" }],
     description:
       "Web soporte TI y desarrollo de software",
     tags: [

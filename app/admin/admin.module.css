@@ -1118,3 +1118,166 @@ textarea.control {
     justify-content: flex-end;
   }
 }
+
+/* ─────────────── Responsive: tablets, celulares y táctil ───────────── */
+
+@media (max-width: 900px) {
+  /* El menú queda fijo arriba mientras se desplaza el contenido. */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--a-panel);
+  }
+
+  .nav {
+    padding-bottom: 0.25rem;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .navCount {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    gap: 1.25rem;
+    padding: 1.25rem 1rem 5rem;
+  }
+
+  .pageTitle {
+    font-size: 1.3rem;
+  }
+
+  .pageHeader > * {
+    width: 100%;
+  }
+
+  .toolbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .toolbarInfo {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .toolbar .primaryBtn {
+    width: 100%;
+  }
+
+  .panelHeader,
+  .panelBody {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .ledgerMeta,
+  .ledgerTitle {
+    overflow-wrap: anywhere;
+  }
+
+  .drawerHeader {
+    padding: 1rem;
+  }
+
+  .saveBar {
+    bottom: 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .saveActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dropzone {
+    padding: 1.25rem 1rem;
+  }
+
+  .fileRow {
+    flex-wrap: wrap;
+  }
+
+  .toastRegion {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .confirmActions {
+    flex-direction: column-reverse;
+  }
+
+  .confirmActions > * {
+    width: 100%;
+  }
+}
+
+/* Pantallas táctiles: controles más grandes y sin zoom automático en iOS. */
+@media (pointer: coarse) {
+  .control,
+  .search,
+  .tagsInput {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .iconBtn,
+  .textBtn {
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .navItem {
+    min-height: 40px;
+  }
+
+  .primaryBtn,
+  .ghostBtn,
+  .dangerSolidBtn {
+    min-height: 40px;
+  }
+}
+
+/* ───────────────────────── Editor de enlaces ───────────────────────── */
+
+.linksBox {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.linkRow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.linkAdd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .linkRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .linkRow > :nth-child(2) {
+    grid-column: 1 / 2;
+    grid-row: 2;
+  }
+
+  .linkRow > :nth-child(3) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}

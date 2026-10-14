@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import type { AccentColor, ProjectTag } from "@/types";
+import type { AccentColor, ProjectLink, ProjectTag } from "@/types";
 import type { Field, FieldValue } from "./resources";
 import styles from "./admin.module.css";
 
@@ -82,10 +82,18 @@ export function FieldControl({ field, value, onChange }: FieldControlProps) {
         </select>
       )}
 
+      {field.type === "links" && (
+        <LinksInput
+          value={Array.isArray(value) ? (value as ProjectLink[]) : []}
+          suggestions={field.suggestions ?? []}
+          onChange={onChange}
+        />
+      )}
+
       {field.type === "tags" && (
         <TagsInput
           id={id}
-          value={Array.isArray(value) ? value : []}
+          value={Array.isArray(value) ? (value as ProjectTag[]) : []}
           onChange={onChange}
         />
       )}
@@ -169,6 +177,71 @@ function TagsInput({ id, value, onChange }: TagsInputProps) {
           }
         }}
       />
+    </div>
+  );
+}
+
+/* ───────────────────── Editor de enlaces (texto + dirección) ───────── */
+
+interface LinksInputProps {
+  value: ProjectLink[];
+  suggestions: string[];
+  onChange: (links: ProjectLink[]) => void;
+}
+
+function LinksInput({ value, suggestions, onChange }: LinksInputProps) {
+  const used = new Set(value.map((link) => link.label));
+  const available = suggestions.filter((label) => !used.has(label));
+
+  const add = (label = "") => onChange([...value, { label, url: "" }]);
+  const remove = (index: number) => onChange(value.filter((_, i) => i !== index));
+  const edit = (index: number, patch: Partial<ProjectLink>) =>
+    onChange(value.map((link, i) => (i === index ? { ...link, ...patch } : link)));
+
+  return (
+    <div className={styles.linksBox}>
+      {value.length === 0 && <p className={styles.mutedText}>Este proyecto todavía no tiene enlaces.</p>}
+
+      {value.map((link, index) => (
+        <div key={index} className={styles.linkRow}>
+          <input
+            className={styles.control}
+            value={link.label}
+            placeholder="Texto (Demo web)"
+            aria-label={`Texto del enlace ${index + 1}`}
+            autoComplete="off"
+            onChange={(event) => edit(index, { label: event.target.value })}
+          />
+          <input
+            className={styles.control}
+            type="url"
+            value={link.url}
+            placeholder="https://…"
+            aria-label={`Dirección del enlace ${index + 1}`}
+            autoComplete="off"
+            onChange={(event) => edit(index, { url: event.target.value })}
+          />
+          <button
+            type="button"
+            className={styles.iconBtn}
+            onClick={() => remove(index)}
+            aria-label={`Quitar el enlace ${index + 1}`}
+          >
+            ×
+          </button>
+        </div>
+      ))}
+
+      <div className={styles.linkAdd}>
+        {available.map((label) => (
+          <button key={label} type="button" className={styles.ghostBtn} onClick={() => add(label)}>
+            + {label}
+          </button>
+        ))}
+        <button type="button" className={styles.ghostBtn} onClick={() => add()}>
+          + Otro enlace
+        </button>
+      </div>
     </div>
   );
 }

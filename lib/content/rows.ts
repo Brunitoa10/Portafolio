@@ -1,4 +1,4 @@
-import type { AccentColor, Project, TerminalLine } from "@/types";
+import type { AccentColor, Project, ProjectLink, TerminalLine } from "@/types";
 
 /** Forma de cada fila tal como está en la base de datos. */
 
@@ -10,6 +10,8 @@ export interface ProjectRow {
   href: string | null;
   description: string | null;
   tags: Project["tags"] | null;
+  /** Puede faltar si todavía no se ejecutó la migración de enlaces. */
+  links?: ProjectLink[] | null;
 }
 
 export interface SkillRow {

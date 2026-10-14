@@ -1,4 +1,4 @@
-import type { ProjectTag } from "@/types";
+import type { ProjectLink, ProjectTag } from "@/types";
 
 /* ──────────────────────────────────────────────────────────────────────
    Descripción declarativa de cada sección editable del panel.
@@ -26,7 +26,7 @@ export type Row = { id: number; sort_order: number; [column: string]: unknown };
 /** Registro de una sola fila (`profile`). */
 export type SingleRecord = Record<string, unknown>;
 
-export type FieldValue = string | boolean | ProjectTag[];
+export type FieldValue = string | boolean | ProjectTag[] | ProjectLink[];
 export type FormValues = Record<string, FieldValue>;
 
 interface FieldBase {
@@ -57,7 +57,8 @@ export type Field =
       defaultValue: string;
     })
   | (FieldBase & { type: "checkbox"; defaultValue?: boolean })
-  | (FieldBase & { type: "tags" });
+  | (FieldBase & { type: "tags" })
+  | (FieldBase & { type: "links"; suggestions?: string[] });
 
 export interface RowSummary {
   /** Texto o emoji corto que se muestra a la izquierda. */

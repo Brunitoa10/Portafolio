@@ -310,52 +310,59 @@ section {
    SKILLS
 ────────────────────────────────────── */
 .skills-categories {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
 }
 .skill-cat {
   --accent: var(--green);
-  padding: 1.25rem 1.35rem 1.4rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-top: 2px solid var(--accent);
-  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  column-gap: 3rem;
+  align-items: start;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--border);
 }
 .skill-cat.cyan { --accent: var(--cyan); }
-.skill-cat-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+.skill-cat-head { display: grid; gap: 0.3rem; }
 .skill-cat-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text);
-  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+.skill-cat-label::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--accent);
 }
 .skill-cat-count {
+  padding-left: calc(6px + 0.65rem);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
 }
-.chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.skill-cat-count::after { content: ' herramientas'; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .chip {
   font-family: var(--mono);
-  font-size: 0.74rem;
-  padding: 0.32rem 0.7rem;
-  border-radius: 6px;
+  font-size: 0.76rem;
+  padding: 0.34rem 0.75rem;
+  border-radius: 5px;
   border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-muted);
+  background: var(--bg-card);
+  color: #8fa3b5;
   transition: color 0.18s, border-color 0.18s;
   cursor: default;
 }
-.chip:hover { color: var(--text); border-color: var(--accent, var(--green)); }
-.skill-cat .chip:hover { border-color: var(--accent); }
+.skill-cat .chip:hover { color: var(--text); border-color: var(--accent); }
 
 /* ──────────────────────────────────────
    PROJECTS
@@ -402,6 +409,7 @@ section {
   overflow-wrap: anywhere;
 }
 .proj-icon { flex: none; font-size: 1.15rem; line-height: 1; }
+.proj-links { display: flex; flex: none; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem; }
 .proj-link-btn {
   flex: none;
   font-family: var(--mono);
@@ -572,9 +580,15 @@ footer {
   .about-grid { grid-template-columns: 1fr; }
   .projects-layout { grid-template-columns: minmax(0, 1fr); }
   .proj-card.wide { grid-column: span 1; }
-  .skills-categories { grid-template-columns: minmax(0, 1fr); }
+  .skill-cat { grid-template-columns: minmax(0, 1fr); row-gap: 0.9rem; padding: 1.35rem 0; }
+  .skill-cat-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .skill-cat-count { padding-left: 0; }
+  .skill-cat-count::after { content: ''; }
 }
 @media (max-width: 600px) {
+  /* Con varios enlaces, bajan a su propia línea debajo del nombre. */
+  .proj-top:has(.proj-links a:nth-child(2)) { flex-wrap: wrap; }
+  .proj-links:has(a:nth-child(2)) { order: 2; width: 100%; justify-content: flex-start; }
   nav { padding: 0.9rem 1.2rem; }
   .nav-links { gap: 1.2rem; }
   .nav-links a { font-size: 0.7rem; }

@@ -4,7 +4,7 @@ import { ProjectTagBadge } from "./ProjectTagBadge";
 /** Etiquetas visibles por tarjeta; el resto se resume como «+n». */
 const MAX_TAGS = 5;
 
-export function ProjectCard({ name, icon, description, tags, wide, linkLabel, href }: Project) {
+export function ProjectCard({ name, icon, description, tags, wide, links }: Project) {
   const visibleTags = tags.slice(0, MAX_TAGS);
   const hiddenCount = tags.length - visibleTags.length;
 
@@ -19,11 +19,21 @@ export function ProjectCard({ name, icon, description, tags, wide, linkLabel, hr
           )}
           <span>{name}</span>
         </h3>
-        {linkLabel && href && (
-          <a href={href} className="proj-link-btn" target="_blank" rel="noreferrer">
-            {linkLabel}
-            <span aria-hidden="true"> ↗</span>
-          </a>
+        {links.length > 0 && (
+          <div className="proj-links">
+            {links.map((link, index) => (
+              <a
+                key={`${link.url}-${index}`}
+                href={link.url}
+                className="proj-link-btn"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {link.label}
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            ))}
+          </div>
         )}
       </header>
 

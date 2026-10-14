@@ -16,18 +16,11 @@ export const projectsResource: ResourceDef = {
     { key: "icon", label: "Ícono (emoji)", type: "text", half: true, defaultValue: "📁" },
     { key: "description", label: "Descripción", type: "textarea", rows: 4 },
     {
-      key: "href",
-      label: "Enlace",
-      type: "url",
-      half: true,
-      placeholder: "https://github.com/…",
-    },
-    {
-      key: "link_label",
-      label: "Texto del enlace",
-      type: "text",
-      half: true,
-      defaultValue: "⌥ code",
+      key: "links",
+      label: "Enlaces",
+      type: "links",
+      suggestions: ["⌥ GitHub", "▶ Demo web", "🌐 Sitio web", "📄 Documentación"],
+      hint: "Código, demo web, sitio publicado… Podés agregar todos los que quieras.",
     },
     {
       key: "tags",
@@ -43,10 +36,17 @@ export const projectsResource: ResourceDef = {
   ],
   summarize: (row) => {
     const tags = tagList(row, "tags").map((tag) => tag.label);
+    const links = Array.isArray(row.links) ? row.links.length : 0;
     return {
       leading: text(row, "icon") || "📁",
       title: text(row, "name"),
-      meta: [row.wide ? "Destacado" : "", tags.join(", ")].filter(Boolean).join(" · "),
+      meta: [
+        row.wide ? "Destacado" : "",
+        links ? `${links} ${links === 1 ? "enlace" : "enlaces"}` : "",
+        tags.join(", "),
+      ]
+        .filter(Boolean)
+        .join(" · "),
     };
   },
 };
