@@ -24,14 +24,30 @@ export interface ProjectTag {
   accent: AccentColor;
 }
 
+/** Enlace de un proyecto (repositorio, demo web, documentación…). */
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
+export type ProjectCategory = "web" | "escritorio" | "datos" | "infra" | "otros";
+
+export type ProjectStatus = "produccion" | "desarrollo" | "completado";
+
 export interface Project {
   name: string;
   icon: string;
   description: string;
   tags: ProjectTag[];
-  wide?: boolean;
-  linkLabel?: string;
-  href?: string;
+  links: ProjectLink[];
+  category: ProjectCategory;
+  /** Tipo dentro de la categoría: Juegos, Gestión, E-commerce… (texto libre). */
+  subcategory?: string;
+  status: ProjectStatus;
+  /** Se muestra como tarjeta grande, con imagen. */
+  featured: boolean;
+  /** Captura o portada (URL). Si falta, se dibuja una portada con el ícono. */
+  imageUrl?: string;
 }
 
 export interface TimelineEntry {

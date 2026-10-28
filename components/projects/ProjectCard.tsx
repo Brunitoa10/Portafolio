@@ -1,58 +1,42 @@
 import type { Project } from "@/types";
-import { ProjectTagBadge } from "./ProjectTagBadge";
+import { projectKindLabel } from "@/lib/projectMeta";
+import { ProjectLinks, ProjectTags, StatusBadge } from "./ProjectMeta";
 
-/** Etiquetas visibles por tarjeta; el resto se resume como «+n». */
-const MAX_TAGS = 5;
-
-export function ProjectCard({ name, icon, description, tags, wide, links }: Project) {
-  const visibleTags = tags.slice(0, MAX_TAGS);
-  const hiddenCount = tags.length - visibleTags.length;
-
+/** Tarjeta grande para los proyectos destacados. */
+export function ProjectCard({
+  name,
+  icon,
+  description,
+  tags,
+  links,
+  category,
+  subcategory,
+  status,
+  imageUrl,
+}: Project) {
   return (
-    <article className={`proj-card${wide ? " wide" : ""}`}>
-      <header className="proj-top">
-        <h3 className="proj-name">
-          {icon && (
-            <span className="proj-icon" aria-hidden="true">
-              {icon}
-            </span>
-          )}
-          <span>{name}</span>
-        </h3>
-        {links.length > 0 && (
-          <div className="proj-links">
-            {links.map((link, index) => (
-              <a
-                key={`${link.url}-${index}`}
-                href={link.url}
-                className="proj-link-btn"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {link.label}
-                <span aria-hidden="true"> ↗</span>
-              </a>
-            ))}
-          </div>
+    <article className="proj-feature" data-category={category}>
+      <div className="proj-visual">
+        {imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={imageUrl} alt={`Captura de ${name}`} loading="lazy" />
+        ) : (
+          <span className="proj-visual-icon" aria-hidden="true">
+            {icon}
+          </span>
         )}
-      </header>
+        <span className="proj-visual-category">{projectKindLabel(category, subcategory)}</span>
+      </div>
 
-      {description && <p className="proj-desc">{description}</p>}
-
-      {tags.length > 0 && (
-        <ul className="proj-tags">
-          {visibleTags.map((tag, index) => (
-            <li key={`${tag.label}-${index}`}>
-              <ProjectTagBadge {...tag} />
-            </li>
-          ))}
-          {hiddenCount > 0 && (
-            <li>
-              <span className="ptag ptag-more">+{hiddenCount}</span>
-            </li>
-          )}
-        </ul>
-      )}
+      <div className="proj-feature-body">
+        <div className="proj-feature-head">
+          <h3 className="proj-name">{name}</h3>
+          <StatusBadge status={status} />
+        </div>
+        {description && <p className="proj-desc">{description}</p>}
+        <ProjectTags tags={tags} />
+        <ProjectLinks links={links} />
+      </div>
     </article>
   );
 }

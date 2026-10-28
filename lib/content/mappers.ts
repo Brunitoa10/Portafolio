@@ -36,7 +36,11 @@ function toProjectLinks(row: ProjectRow): ProjectLink[] {
 export const toProject = (row: ProjectRow): Project => ({
   name: row.name,
   icon: row.icon ?? "",
-  wide: row.wide,
+  featured: row.wide,
+  category: row.category === "juegos" ? "escritorio" : (row.category ?? "otros"),
+  subcategory: row.subcategory ?? (row.category === "juegos" ? "Juegos" : undefined),
+  status: row.status ?? "completado",
+  imageUrl: row.image_url ?? undefined,
   description: row.description ?? "",
   tags: row.tags ?? [],
   links: toProjectLinks(row),
